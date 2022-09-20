@@ -1,0 +1,26 @@
+[
+  {
+    "Command": "Add-PnPAlert -List \"Demo List\"",
+    "Rank": 3
+  },
+  {
+    "Command": "Add-PnPAlert -Title \"Alert for user\" -List \"Demo List\" -User \"i:0#.f|membership|Alice@contoso.onmicrosoft.com\"",
+    "Rank": 1
+  },
+  {
+    "Command": "Add-PnPPage -Name \"NewPage\" -Title \"Welcome to my page\"",
+    "Rank": 2
+  },
+  {
+    "Command": "Copy-PnPList -Identity \"My List\" -Title \"Copy of My List\"",
+    "Rank": 1
+  },
+  {
+    "Command": "Get-PnPPage -Identity \"MyPage.aspx\"",
+    "Rank": 1
+  },
+  {
+    "Command": "Get-PnPPage -Identity \"MyPage.aspx\" -Web (Get-PnPWeb -Identity \"Subsite1\")",
+    "Rank": 2
+  }
+]
