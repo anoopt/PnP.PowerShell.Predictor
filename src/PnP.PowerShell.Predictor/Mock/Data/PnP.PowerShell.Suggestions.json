@@ -472,10 +472,6 @@
     "Command": "Add-PnPSiteCollectionAdmin -Owners @(\"user1@contoso.onmicrosoft.com\", \"user2@contoso.onmicrosoft.com\")"
   },
   {
-    "Rank": 3,
-    "Command": "Get-PnPUser | Where-Object Title -Like \"*Doe\" | Add-PnPSiteCollectionAdmin"
-  },
-  {
     "Rank": 1,
     "Command": "Add-PnPSiteCollectionAppCatalog"
   },
@@ -608,10 +604,6 @@
     "Command": "Add-PnPTenantSequence -Template $mytemplate -Sequence $mysequence"
   },
   {
-    "Rank": 2,
-    "Command": "New-PnPTenantSequence -Id \"MySequence\" | Add-PnPTenantSequence -Template $template"
-  },
-  {
     "Rank": 1,
     "Command": "Add-PnPTenantSequenceSite -Site $myteamsite -Sequence $mysequence"
   },
@@ -709,18 +701,14 @@
   },
   {
     "Rank": 1,
-    "Command": "Get-PnPRecycleBinItem | Where-Object LeafName -like \"*.docx\" | Clear-PnpRecycleBinItem"
-  },
-  {
-    "Rank": 2,
     "Command": "Clear-PnPRecycleBinItem -Identity 72e4d749-d750-4989-b727-523d6726e442"
   },
   {
-    "Rank": 3,
+    "Rank": 2,
     "Command": "Clear-PnPRecycleBinItem -Identity $item -Force"
   },
   {
-    "Rank": 4,
+    "Rank": 3,
     "Command": "Clear-PnPRecycleBinItem -All -RowLimit 10000"
   },
   {
@@ -734,6 +722,54 @@
   {
     "Rank": 2,
     "Command": "Clear-PnPTenantRecycleBinItem -Url \"https://tenant.sharepoint.com/sites/contoso\" -Wait"
+  },
+  {
+    "Rank": 1,
+    "Command": "Connect-PnPOnline -Url \"contoso.sharepoint.com\""
+  },
+  {
+    "Rank": 2,
+    "Command": "Connect-PnPOnline -Url \"contoso.sharepoint.com\" -Credentials (Get-Credential)"
+  },
+  {
+    "Rank": 3,
+    "Command": "Connect-PnPOnline -Url \"contoso.sharepoint.de\" -ClientId 344b8aab-389c-4e4a-8fa1-4c1ae2c0a60d -ClientSecret $clientSecret"
+  },
+  {
+    "Rank": 4,
+    "Command": "Connect-PnPOnline -Url \"contoso.sharepoint.com\" -DeviceLogin"
+  },
+  {
+    "Rank": 5,
+    "Command": "Connect-PnPOnline -Url \"contoso.sharepoint.com\" -DeviceLogin -LaunchBrowser"
+  },
+  {
+    "Rank": 6,
+    "Command": "Connect-PnPOnline -Url \"contoso.sharepoint.com\" -ClientId 6c5c98c7-e05a-4a0f-bcfa-0cfc65aa1f28 -Tenant 'contoso.onmicrosoft.com' -Thumbprint 34CFAA860E5FB8C44335A38A097C1E41EEA206AA"
+  },
+  {
+    "Rank": 7,
+    "Command": "Connect-PnPOnline -Url \"contoso.sharepoint.com\" -ClientId 6c5c98c7-e05a-4a0f-bcfa-0cfc65aa1f28 -CertificateBase64Encoded $base64encodedstring -Tenant 'contoso.onmicrosoft.com'"
+  },
+  {
+    "Rank": 8,
+    "Command": "Connect-PnPOnline -Url \"contoso.sharepoint.com\" -UseWebLogin"
+  },
+  {
+    "Rank": 9,
+    "Command": "Connect-PnPOnline -Url \"contoso.sharepoint.com\" -Interactive"
+  },
+  {
+    "Rank": 10,
+    "Command": "Connect-PnPOnline -Url \"https://portal.contoso.com\" -TransformationOnPrem -CurrentCredential"
+  },
+  {
+    "Rank": 11,
+    "Command": "Connect-PnPOnline -ManagedIdentity Get-PnPTeamsTeam"
+  },
+  {
+    "Rank": 12,
+    "Command": "Connect-PnPOnline -Url contoso.sharepoint.com -AccessToken $token"
   },
   {
     "Rank": 1,
@@ -913,10 +949,6 @@
   },
   {
     "Rank": 4,
-    "Command": "Get-PnPList | ? Title -like \"*Test*\" | Copy-PnPList -DestinationWebUrl https://contoso.sharepoint.com/sites/hrdepartment"
-  },
-  {
-    "Rank": 5,
     "Command": "Copy-PnPList -SourceListUrl https://contoso.sharepoint.com/sites/templates/lists/mylist -Verbose -DestinationWebUrl https://contoso.sharepoint.com/sites/hrdepartment\\"
   },
   {
@@ -1361,10 +1393,6 @@
   },
   {
     "Rank": 1,
-    "Command": "Connect-PnPOnline -Url $siteAurl -Credentials $credentials $ctx = Get-PnPContext Get-PnPList # returns the lists from site specified with $siteAurl Connect-PnPOnline -Url $siteBurl -Credentials $credentials Get-PnPList # returns the lists from the site specified with $siteBurl Set-PnPContext -Context $ctx # switch back to site A Get-PnPList # returns the lists from site A"
-  },
-  {
-    "Rank": 1,
     "Command": "Get-PnPCustomAction"
   },
   {
@@ -1592,14 +1620,6 @@
     "Command": "Get-PnPGroupMember -Group \"Marketing Site Members\" -User \"manager@domain.com\""
   },
   {
-    "Rank": 3,
-    "Command": "Get-PnPGroup | Get-PnPGroupMember"
-  },
-  {
-    "Rank": 4,
-    "Command": "Get-PnPGroup | ? Title -Like 'Marketing*' | Get-PnPGroupMember"
-  },
-  {
     "Rank": 1,
     "Command": "Get-PnPGroupPermissions -Identity 'My Site Members'"
   },
@@ -1634,10 +1654,6 @@
   {
     "Rank": 2,
     "Command": "Get-PnPHubSiteChild -Identity \"https://contoso.sharepoint.com/sites/myhubsite\""
-  },
-  {
-    "Rank": 3,
-    "Command": "Get-PnPHubSite | Get-PnPHubSiteChild"
   },
   {
     "Rank": 1,
@@ -1749,19 +1765,7 @@
   },
   {
     "Rank": 9,
-    "Command": "PS D:\\Code> Get-PnPListItem -List \"Shared Documents\" | Select-Object id,@{label=\"Filename\";expression={$_.FieldValues.FileLeafRef}}  Id Filename -- --------  1 Contoso-Financial-Calendar-Q1_68340_97779.pptx  5 Does this work.docx"
-  },
-  {
-    "Rank": 10,
     "Command": "Get-PnPListItem -List Tasks -Id 1 -IncludeContentType"
-  },
-  {
-    "Rank": 1,
-    "Command": "Get-PnPListItemAttachment -List \"Demo List\" -Identity 1 -Path \"C:\\temp\""
-  },
-  {
-    "Rank": 2,
-    "Command": "Get-PnPListItemAttachment -List \"Demo List\" -Identity 1 -Path \"C:\\temp\" -Force"
   },
   {
     "Rank": 1,
@@ -2308,10 +2312,6 @@
     "Command": "Get-PnPSiteTemplate -Out template.xml -Handlers Fields, ContentTypes, SupportedUILanguages -PersistMultiLanguageResources"
   },
   {
-    "Rank": 15,
-    "Command": "Connect-PnPOnline -Url \"https://contoso.sharepoint.com/sites/yourContentCenter\"  Get-PnPSiteTemplate -Out MyModels.pnp -Handlers SyntexModels"
-  },
-  {
     "Rank": 1,
     "Command": "Get-PnPSiteUserInvitations -Site \"https://contoso.sharepoint.com/sites/ContosoWeb1/\" -EmailAddress someone@example.com"
   },
@@ -2788,10 +2788,6 @@
     "Command": "Get-PnPWebhookSubscriptions -List MyList"
   },
   {
-    "Rank": 2,
-    "Command": "Get-PnPList | Get-PnPWebhookSubscriptions"
-  },
-  {
     "Rank": 1,
     "Command": "Get-PnPWebPart -ServerRelativePageUrl \"/sites/demo/sitepages/home.aspx\""
   },
@@ -2844,10 +2840,6 @@
     "Command": "Grant-PnPSiteDesignRights -Identity 5c73382d-9643-4aa0-9160-d0cba35e40fd -Principals \"myuser@mydomain.com\",\"myotheruser@mydomain.com\""
   },
   {
-    "Rank": 2,
-    "Command": "Get-PnPSiteDesign -Title \"MySiteDesign\" -SiteScriptIds 438548fd-60dd-42cf-b843-2db506c8e259 -WebTemplate TeamSite | Grant-PnPSiteDesignRights -Principals \"myuser@mydomain.com\",\"myotheruser@mydomain.com\""
-  },
-  {
     "Rank": 1,
     "Command": "Grant-PnPTenantServicePrincipalPermission -Scope \"Group.Read.All\""
   },
@@ -2892,24 +2884,12 @@
     "Command": "Install-PnPApp -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Site"
   },
   {
-    "Rank": 3,
-    "Command": "Get-PnPApp -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe | Install-PnPApp"
-  },
-  {
-    "Rank": 4,
-    "Command": "Get-PnPApp -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Site | Install-PnPApp"
-  },
-  {
     "Rank": 1,
     "Command": "Invoke-PnPListDesign -Identity 5c73382d-9643-4aa0-9160-d0cba35e40fd"
   },
   {
     "Rank": 2,
     "Command": "Invoke-PnPListDesign -Identity 5c73382d-9643-4aa0-9160-d0cba35e40fd -WebUrl \"https://contoso.sharepoint.com/sites/mydemosite\""
-  },
-  {
-    "Rank": 3,
-    "Command": "Get-PnPListDesign | ?{$_.Title -eq \"Demo\"} | Invoke-PnPListDesign"
   },
   {
     "Rank": 1,
@@ -2924,16 +2904,8 @@
     "Command": "Invoke-PnPSiteDesign -Identity 5c73382d-9643-4aa0-9160-d0cba35e40fd -WebUrl \"https://contoso.sharepoint.com/sites/mydemosite\""
   },
   {
-    "Rank": 3,
-    "Command": "Get-PnPSiteDesign | ?{$_.Title -eq \"Demo\"} | Invoke-PnPSiteDesign"
-  },
-  {
     "Rank": 1,
     "Command": "Invoke-PnPSiteScript -Identity \"My awesome script\" -WebUrl https://contoso.sharepoint.com/sites/mydemosite"
-  },
-  {
-    "Rank": 2,
-    "Command": "Get-PnPSiteScript | ? { $_.Title -like \"*Test*\"} | Invoke-PnPSiteScript -WebUrl https://contoso.sharepoint.com/sites/mydemosite"
   },
   {
     "Rank": 1,
@@ -3094,10 +3066,6 @@
   {
     "Rank": 3,
     "Command": "New-PnPAzureADUserTemporaryAccessPass -Identity johndoe@contoso.onmicrosoft.com -StartDateTime (Get-Date).AddHours(2) -LifeTimeInMinutes 10 -IsUseableOnce:$true"
-  },
-  {
-    "Rank": 4,
-    "Command": "Get-PnPAzureADUser -Identity johndoe@contoso.onmicrosoft.com | New-PnPAzureADUserTemporaryAccessPass -StartDateTime (Get-Date).AddMinutes(10) -LifeTimeInMinutes 15 -IsUseableOnce:$false"
   },
   {
     "Rank": 1,
@@ -3328,10 +3296,6 @@
     "Command": "New-PnPTermLabel -Name \"Finanzwesen\" -Lcid 1031 -Term (Get-PnPTerm -Identity \"Finance\" -TermSet \"Departments\" -TermGroup \"Corporate\")"
   },
   {
-    "Rank": 2,
-    "Command": "Get-PnPTerm -Identity \"Finance\" -TermSet \"Departments\" -TermGroup \"Corporate\" | New-PnPTermLabel -Name \"Finanzwesen\" -Lcid 1031"
-  },
-  {
     "Rank": 1,
     "Command": "New-PnPTermSet -Name \"Department\" -TermGroup \"Corporate\""
   },
@@ -3453,10 +3417,6 @@
   },
   {
     "Rank": 1,
-    "Command": "Set-PnPAzureADAppSitePermission -PermissionId ABSDFefsdfef33fsdFSvsadf3e3fsdaffsa -Permissions Read"
-  },
-  {
-    "Rank": 1,
     "Command": "Remove-PnPAzureADGroup -Identity $groupId"
   },
   {
@@ -3504,10 +3464,6 @@
     "Command": "Remove-PnPCustomAction -Identity aa66f67e-46c0-4474-8a82-42bf467d07f2 -Force"
   },
   {
-    "Rank": 4,
-    "Command": "Get-PnPCustomAction -Scope All | ? Location -eq ScriptLink | Remove-PnPCustomAction"
-  },
-  {
     "Rank": 1,
     "Command": "Remove-PnPDeletedMicrosoft365Group -Identity 38b32e13-e900-4d95-b860-fb52bc07ca7f"
   },
@@ -3533,18 +3489,14 @@
   },
   {
     "Rank": 6,
-    "Command": "Get-PnPEventReceiver | ? ReceiverUrl -Like \"*azurewebsites.net*\" | Remove-PnPEventReceiver"
-  },
-  {
-    "Rank": 7,
     "Command": "Remove-PnPEventReceiver -Scope Site"
   },
   {
-    "Rank": 8,
+    "Rank": 7,
     "Command": "Remove-PnPEventReceiver -Scope Web"
   },
   {
-    "Rank": 9,
+    "Rank": 8,
     "Command": "Remove-PnPEventReceiver -Scope All"
   },
   {
@@ -3652,10 +3604,6 @@
     "Command": "Remove-PnPJavaScriptLink -Identity faea0ce2-f0c2-4d45-a4dc-73898f3c2f2e -Scope All"
   },
   {
-    "Rank": 6,
-    "Command": "Get-PnPJavaScriptLink -Scope All | ? Sequence -gt 1000 | Remove-PnPJavaScriptLink"
-  },
-  {
     "Rank": 1,
     "Command": "Remove-PnPKnowledgeHubSite"
   },
@@ -3709,31 +3657,11 @@
   },
   {
     "Rank": 1,
-    "Command": "Remove-PnPListItemComment -List \"Demo List\" -Identity \"1\" -Text \"test comment\" -Force"
-  },
-  {
-    "Rank": 2,
-    "Command": "Remove-PnPListItemComment -List \"Demo List\" -Identity \"1\" -Text \"test comment\""
-  },
-  {
-    "Rank": 3,
-    "Command": "Remove-PnPListItemComment -List \"Demo List\" -Identity \"1\" -All -Force"
-  },
-  {
-    "Rank": 4,
-    "Command": "Remove-PnPListItemComment -List \"Demo List\" -Identity \"1\" -All"
-  },
-  {
-    "Rank": 1,
     "Command": "Remove-PnPMicrosoft365Group -Identity $groupId"
   },
   {
     "Rank": 2,
     "Command": "Remove-PnPMicrosoft365Group -Identity $group"
-  },
-  {
-    "Rank": 3,
-    "Command": "Get-PnPMicrosoft365Group | ? Visibility -eq \"Public\" | Remove-PnPMicrosoft365Group"
   },
   {
     "Rank": 1,
@@ -3757,19 +3685,11 @@
   },
   {
     "Rank": 2,
-    "Command": "Get-PnPNavigationNode -Location Footer | Select-Object -First 1 | Remove-PnPNavigationNode -Force"
-  },
-  {
-    "Rank": 3,
     "Command": "Remove-PnPNavigationNode -Title Recent -Location QuickLaunch"
   },
   {
-    "Rank": 4,
+    "Rank": 3,
     "Command": "Remove-PnPNavigationNode -Title Home -Location TopNavigationBar -Force"
-  },
-  {
-    "Rank": 5,
-    "Command": "Get-PnPNavigationNode -Location QuickLaunch | Remove-PnPNavigationNode -Force"
   },
   {
     "Rank": 1,
@@ -3862,14 +3782,6 @@
   {
     "Rank": 2,
     "Command": "Remove-PnPSiteCollectionAdmin -Owners @(\"user1@contoso.onmicrosoft.com\", \"user2@contoso.onmicrosoft.com\")"
-  },
-  {
-    "Rank": 3,
-    "Command": "Get-PnPUser | ? Title -Like \"*Doe\" | Remove-PnPSiteCollectionAdmin"
-  },
-  {
-    "Rank": 4,
-    "Command": "Get-PnPSiteCollectionAdmin | Remove-PnPSiteCollectionAdmin"
   },
   {
     "Rank": 1,
@@ -4017,10 +3929,6 @@
   },
   {
     "Rank": 3,
-    "Command": "Get-PnPUser | ? Email -eq \"user@tenant.onmicrosoft.com\" | Remove-PnPUser"
-  },
-  {
-    "Rank": 4,
     "Command": "Remove-PnPUser -Identity i:0#.f|membership|user@tenant.onmicrosoft.com -Confirm:$false"
   },
   {
@@ -4046,10 +3954,6 @@
   {
     "Rank": 2,
     "Command": "Remove-PnPWeb -Identity 5fecaf67-6b9e-4691-a0ff-518fc9839aa0"
-  },
-  {
-    "Rank": 3,
-    "Command": "Get-PnPSubWeb | Remove-PnPWeb -Force"
   },
   {
     "Rank": 1,
@@ -4180,14 +4084,6 @@
     "Command": "Restore-PnpRecycleBinItem -Identity 72e4d749-d750-4989-b727-523d6726e442"
   },
   {
-    "Rank": 2,
-    "Command": "Get-PnPRecycleBinItem | ? -Property LeafName -like \"*.docx\" | Restore-PnpRecycleBinItem"
-  },
-  {
-    "Rank": 3,
-    "Command": "Get-PnPRecycleBinItem -RowLimit 10000 | Restore-PnPRecycleBinItem -Force"
-  },
-  {
     "Rank": 1,
     "Command": "Restore-PnPTenantRecycleBinItem -Url \"https://tenant.sharepoint.com/sites/contoso\""
   },
@@ -4216,10 +4112,6 @@
     "Command": "Revoke-PnPSiteDesignRights -Identity 5c73382d-9643-4aa0-9160-d0cba35e40fd -Principals \"myuser@mydomain.com\",\"myotheruser@mydomain.com\""
   },
   {
-    "Rank": 2,
-    "Command": "Get-PnPSiteDesign -Identity 5c73382d-9643-4aa0-9160-d0cba35e40fd | Revoke-PnPSiteDesignRights -Principals \"myuser@mydomain.com\",\"myotheruser@mydomain.com\""
-  },
-  {
     "Rank": 1,
     "Command": "Revoke-PnPTenantServicePrincipalPermission -Scope \"Group.Read.All\""
   },
@@ -4232,16 +4124,8 @@
     "Command": "Save-PnPSiteTemplate -Template .\\template.xml -Out .\\template.pnp"
   },
   {
-    "Rank": 2,
-    "Command": "Read-PnPSiteTemplate -Path template.xml | Save-PnPSiteTemplate -Out .\\template.pnp"
-  },
-  {
     "Rank": 1,
     "Command": "Save-PnPTenantTemplate -Template template.xml -Out .\\tenanttemplate.pnp"
-  },
-  {
-    "Rank": 2,
-    "Command": "Read-PnPTenantTemplate -Path template.xml | Save-PnPTenantTemplate -Out .\\template.pnp"
   },
   {
     "Rank": 1,
@@ -4369,10 +4253,6 @@
   },
   {
     "Rank": 1,
-    "Command": "Connect-PnPOnline -Url $siteAurl -Credentials $credentials $ctx = Get-PnPContext Get-PnPList # returns the lists from site specified with $siteAurl Connect-PnPOnline -Url $siteBurl -Credentials $credentials Get-PnPList # returns the lists from the site specified with $siteBurl Set-PnPContext -Context $ctx # switch back to site A Get-PnPList # returns the lists from site A"
-  },
-  {
-    "Rank": 1,
     "Command": "Set-PnPDefaultColumnValues -List Documents -Field TaxKeyword -Value \"Company|Locations|Stockholm\""
   },
   {
@@ -4458,10 +4338,6 @@
   {
     "Rank": 3,
     "Command": "Set-PnPFolderPermission -List 'Shared Documents' -Identity 'Shared Documents\\Folder' -User 'user@contoso.com' -AddRole 'Contribute' -ClearExisting"
-  },
-  {
-    "Rank": 4,
-    "Command": "Get-PnPFolder -Url 'Shared Documents\\Folder' | Set-PnPFolderPermission -List 'Shared Documents' -InheritPermissions"
   },
   {
     "Rank": 1,
@@ -5245,18 +5121,14 @@
   },
   {
     "Rank": 2,
-    "Command": "Get-PnPList -Identity \"Tasks\" | Get-PnPView | Set-PnPView -Values @{JSLink=\"hierarchytaskslist.js|customrendering.js\"}"
-  },
-  {
-    "Rank": 3,
     "Command": "Set-PnPView -List \"Documents\" -Identity \"Corporate Documents\" -Fields \"Title\",\"Created\""
   },
   {
-    "Rank": 4,
+    "Rank": 3,
     "Command": "Set-PnPView -List \"Documents\" -Identity \"Corporate Documents\" -Fields \"Title\",\"Created\" -Aggregations \"<FieldRef Name='Title' Type='COUNT'/>\""
   },
   {
-    "Rank": 5,
+    "Rank": 4,
     "Command": "Set-PnPView -List \"Documents\" -Identity \"Dept Documents\" -Fields \"Title,\"Created\" -Values @{Paged=$true;RowLimit=[UInt32]\"100\"}"
   },
   {
@@ -5321,10 +5193,6 @@
   },
   {
     "Rank": 2,
-    "Command": "Get-PnPTenantTheme -Name \"MyTheme\" | Set-PnPWebTheme"
-  },
-  {
-    "Rank": 3,
     "Command": "Set-PnPWebTheme -Theme \"MyCompanyTheme\" -WebUrl https://contoso.sharepoint.com/sites/MyWeb"
   },
   {
