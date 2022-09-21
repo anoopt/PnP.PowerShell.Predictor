@@ -25,7 +25,7 @@
   },
   {
     "Rank": 1,
-    "Command": "Add-PnPApplicationCustomizer -Title \"CollabFooter\" -ClientSideComponentId c0ab3b94-8609-40cf-861e-2a1759170b43 -ClientSideComponentProperties \"{"
+    "Command": "Add-PnPApplicationCustomizer -Title \"CollabFooter\" -ClientSideComponentId c0ab3b94-8609-40cf-861e-2a1759170b43 -ClientSideComponentProperties \"{`\"sourceTermSet`\":`\"PnP-CollabFooter-SharedLinks`\",`\"personalItemsStorageProperty`\":`\"PnP-CollabFooter-MyLinks`\"}"
   },
   {
     "Rank": 1,
@@ -73,10 +73,6 @@
   },
   {
     "Rank": 2,
-    "Command": "$docset = Get-PnPDocumentSetTemplate -Identity \"Test Document Set\" $ct = Get-PnPContentType -Identity \"Test CT\" Add-PnPContentTypeToDocumentSet -ContentType $ct -DocumentSet $docset"
-  },
-  {
-    "Rank": 3,
     "Command": "Add-PnPContentTypeToDocumentSet -ContentType 0x0101001F1CEFF1D4126E4CAD10F00B6137E969 -DocumentSet 0x0120D520005DB65D094035A241BAC9AF083F825F3B"
   },
   {
@@ -85,11 +81,7 @@
   },
   {
     "Rank": 1,
-    "Command": "$cUIExtn = \"<CommandUIExtension><CommandUIDefinitions><CommandUIDefinition Location=\"\"Ribbon.List.Share.Controls._children\"\"><Button Id=\"\"Ribbon.List.Share.GetItemsCountButton\"\" Alt=\"\"Get list items count\"\" Sequence=\"\"11\"\" Command=\"\"Invoke_GetItemsCountButtonRequest\"\" LabelText=\"\"Get Items Count\"\" TemplateAlias=\"\"o1\"\" Image32by32=\"\"_layouts/15/images/placeholder32x32.png\"\" Image16by16=\"\"_layouts/15/images/placeholder16x16.png\"\" /></CommandUIDefinition></CommandUIDefinitions><CommandUIHandlers><CommandUIHandler Command=\"\"Invoke_GetItemsCountButtonRequest\"\" CommandAction=\"\"javascript: alert('Total items in this list: '+ ctx.TotalListItems);\"\" EnabledScript=\"\"javascript: function checkEnable() { return (true);} checkEnable();\"\"/></CommandUIHandlers></CommandUIExtension>\"  Add-PnPCustomAction -Name 'GetItemsCount' -Title 'Invoke GetItemsCount Action' -Description 'Adds custom action to custom list ribbon' -Group 'SiteActions' -Location 'CommandUI.Ribbon' -CommandUIExtension $cUIExtn"
-  },
-  {
-    "Rank": 2,
-    "Command": "Add-PnPCustomAction -Title \"CollabFooter\" -Name \"CollabFooter\" -Location \"ClientSideExtension.ApplicationCustomizer\" -ClientSideComponentId c0ab3b94-8609-40cf-861e-2a1759170b43 -ClientSideComponentProperties \"{"
+    "Command": "Add-PnPCustomAction -Title \"CollabFooter\" -Name \"CollabFooter\" -Location \"ClientSideExtension.ApplicationCustomizer\" -ClientSideComponentId c0ab3b94-8609-40cf-861e-2a1759170b43 -ClientSideComponentProperties \"{`\"sourceTermSet`\":`\"PnP-CollabFooter-SharedLinks`\",`\"personalItemsStorageProperty`\":`\"PnP-CollabFooter-MyLinks`\"}\""
   },
   {
     "Rank": 1,
@@ -138,14 +130,6 @@
   {
     "Rank": 5,
     "Command": "Add-PnPField -Type Choice -Choices \"PnP\",\"Parker\",\"Sharing Is Caring\" -DisplayName \"My Test Column\" -InternalName \"MyTestCol\""
-  },
-  {
-    "Rank": 1,
-    "Command": "$xml = '<Field Type=\"Text\" Name=\"PSCmdletTest\" DisplayName=\"PSCmdletTest\" ID=\"{27d81055-f208-41c9-a976-61c5473eed4a}\" Group=\"Test\" Required=\"FALSE\" StaticName=\"PSCmdletTest\" />' Add-PnPFieldFromXml -FieldXml $xml"
-  },
-  {
-    "Rank": 2,
-    "Command": "$xml = '<Field Type=\"Text\" Name=\"PSCmdletTest\" DisplayName=\"PSCmdletTest\" ID=\"{27d81055-f208-41c9-a976-61c5473eed4a}\" Group=\"Test\" Required=\"FALSE\" StaticName=\"PSCmdletTest\" />' Add-PnPFieldFromXml -List \"Demo List\" -FieldXml $xml"
   },
   {
     "Rank": 1,
@@ -300,10 +284,6 @@
     "Command": "Add-PnPListItem -List \"Demo List\" -Values @{\"Title\"=\"Sales Report\"} -Label \"Public\""
   },
   {
-    "Rank": 6,
-    "Command": "$batch = New-PnPBatch for($i=0;$i -lt 10;$i++) {     Add-PnPListItem -List \"Demo List\" -Values @{\"Title\"=\"Report $i\"} -Batch $batch } Invoke-PnPBatch -Batch $batch"
-  },
-  {
     "Rank": 1,
     "Command": "Add-PnPListItemAttachment -List \"Demo List\" -Identity 1 -Path c:\\temp\\test.mp4"
   },
@@ -432,14 +412,6 @@
     "Command": "Add-PnPPageSection -Page \"MyPage\" -SectionTemplate ThreeColumn -Order 10"
   },
   {
-    "Rank": 3,
-    "Command": "$page = Add-PnPPage -Name \"MyPage\" PS> Add-PnPPageSection -Page $page -SectionTemplate OneColumn"
-  },
-  {
-    "Rank": 4,
-    "Command": "$page = Add-PnPPage -Name \"MyPage\" PS> Add-PnPPageSection -Page $page -SectionTemplate OneColumn -ZoneEmphasis 2"
-  },
-  {
     "Rank": 1,
     "Command": "Add-PnPPageTextPart -Page \"MyPage\" -Text \"Hello World!\""
   },
@@ -490,10 +462,6 @@
   {
     "Rank": 3,
     "Command": "Add-PnPRoleDefinition -RoleName \"AddOnly\" -Clone \"Contribute\" -Exclude DeleteListItems, EditListItems"
-  },
-  {
-    "Rank": 4,
-    "Command": "$roleDefinition = Get-PnPRoleDefinition -Identity \"Contribute\" Add-PnPRoleDefinition -RoleName \"AddOnly\" -Clone $roleDefinition -Exclude DeleteListItems, EditListItems"
   },
   {
     "Rank": 1,
@@ -653,19 +621,7 @@
   },
   {
     "Rank": 1,
-    "Command": "$themepalette = @{   \"themePrimary\" = \"#00ffff\";   \"themeLighterAlt\" = \"#f3fcfc\";   \"themeLighter\" = \"#daffff\";   \"themeLight\" = \"#affefe\";   \"themeTertiary\" = \"#76ffff\";   \"themeSecondary\" = \"#39ffff\";   \"themeDarkAlt\" = \"#00c4c4\";   \"themeDark\" = \"#009090\";   \"themeDarker\" = \"#005252\";   \"neutralLighterAlt\" = \"#f8f8f8\";   \"neutralLighter\" = \"#f4f4f4\";   \"neutralLight\" = \"#eaeaea\";   \"neutralQuaternaryAlt\" = \"#dadada\";   \"neutralQuaternary\" = \"#d0d0d0\";   \"neutralTertiaryAlt\" = \"#c8c8c8\";   \"neutralTertiary\" = \"#a6a6a6\";   \"neutralSecondaryAlt\" = \"#767676\";   \"neutralSecondary\" = \"#666666\";   \"neutralPrimary\" = \"#333\";   \"neutralPrimaryAlt\" = \"#3c3c3c\";   \"neutralDark\" = \"#212121\";   \"black\" = \"#000000\";   \"white\" = \"#fff\";   \"primaryBackground\" = \"#fff\";   \"primaryText\" = \"#333\"  } Add-PnPTenantTheme -Identity \"MyCompanyTheme\" -Palette $themepalette -IsInverted $false"
-  },
-  {
-    "Rank": 2,
-    "Command": "$themepalette = @{   \"themePrimary\" = \"#00ffff\";   \"themeLighterAlt\" = \"#f3fcfc\";   \"themeLighter\" = \"#daffff\";   \"themeLight\" = \"#affefe\";   \"themeTertiary\" = \"#76ffff\";   \"themeSecondary\" = \"#39ffff\";   \"themeDarkAlt\" = \"#00c4c4\";   \"themeDark\" = \"#009090\";   \"themeDarker\" = \"#005252\";   \"neutralLighterAlt\" = \"#f8f8f8\";   \"neutralLighter\" = \"#f4f4f4\";   \"neutralLight\" = \"#eaeaea\";   \"neutralQuaternaryAlt\" = \"#dadada\";   \"neutralQuaternary\" = \"#d0d0d0\";   \"neutralTertiaryAlt\" = \"#c8c8c8\";   \"neutralTertiary\" = \"#a6a6a6\";   \"neutralSecondaryAlt\" = \"#767676\";   \"neutralSecondary\" = \"#666666\";   \"neutralPrimary\" = \"#333\";   \"neutralPrimaryAlt\" = \"#3c3c3c\";   \"neutralDark\" = \"#212121\";   \"black\" = \"#000000\";   \"white\" = \"#fff\";   \"primaryBackground\" = \"#fff\";   \"primaryText\" = \"#333\"  } Add-PnPTenantTheme -Identity \"MyCompanyTheme\" -Palette $themepalette -IsInverted $false -Overwrite"
-  },
-  {
-    "Rank": 1,
     "Command": "Add-PnPTermToTerm -ParentTerm 2d1f298b-804a-4a05-96dc-29b667adec62 -Name SubTerm -CustomProperties @{\"Department\"=\"Marketing\"}"
-  },
-  {
-    "Rank": 2,
-    "Command": "$parentTerm = Get-PnPTerm -Name Marketing -TermSet Departments -TermGroup Corporate Add-PnPTermToTerm -ParentTerm $parentTerm -Name \"Conference Team\""
   },
   {
     "Rank": 1,
@@ -678,14 +634,6 @@
   {
     "Rank": 3,
     "Command": "Add-PnPView -List \"Demo List\" -Title \"Demo View\" -Fields \"Title\",\"Address\" -Aggregations \"<FieldRef Name='Title' Type='COUNT'/>\""
-  },
-  {
-    "Rank": 1,
-    "Command": "$viewsXML = @\" <ListViews>    <List Type='GenericList'>      <View Name='Demo View' ViewTypeKind='Html' OrderedView='TRUE' ViewFields='Author,Created,Editor,Modified' RowLimit='30' DefaultView='TRUE'>        <ViewQuery>          <OrderBy>            <FieldRef Name='ID' Ascending='FALSE'/>          </OrderBy>        </ViewQuery>      </View>     </List> </ListViews> \"@  Add-PnPViewsFromXML -List \"Demo List\" -ViewsXML $viewsXML"
-  },
-  {
-    "Rank": 2,
-    "Command": "$viewsXML = @\" <ListViews>    <List Type='GenericList'>      <View Name='Demo View' ViewTypeKind='Html' OrderedView='TRUE' ViewFields='Author,Created,Editor,Modified' RowLimit='30' DefaultView='TRUE'>        <ViewQuery>          <OrderBy>            <FieldRef Name='ID'  Ascending='FALSE'/>          </OrderBy>        </ViewQuery>      </View>     </List>     <List Type='GenericList'>      <View Name='Created By Me' ViewTypeKind='Html' OrderedView='TRUE' ViewFields='Author,Created,Editor,Modified' RowLimit='30' DefaultView='FALSE'>        <ViewQuery>          <Where>            <Eq>              <FieldRef Name='Author' />              <Value Type='Integer'>                <UserID Type='Integer' />              </Value>            </Eq>          </Where>          <OrderBy>            <FieldRef Name='Created' Ascending='FALSE'/>          </OrderBy>        </ViewQuery>      </View>     </List> </ListViews> \"@  Add-PnPViewsFromXML -List \"Demo List\" -ViewsXML $viewsXML"
   },
   {
     "Rank": 1,
@@ -912,10 +860,6 @@
     "Command": "Copy-PnPFile -SourceUrl \"SubSite1/Documents/company.docx\" -TargetUrl \"SubSite2/Documents\""
   },
   {
-    "Rank": 11,
-    "Command": "$job = Copy-PnPFile -SourceUrl \"Shared Documents/company.docx\" -TargetUrl \"SubSite2/Shared Documents\" -NoWait $jobStatus = Receive-PnPCopyMoveJobStatus -Job $job if($jobStatus.JobState == 0) {   Write-Host \"Job finished\" }"
-  },
-  {
     "Rank": 1,
     "Command": "Copy-PnPFolder -SourceUrl \"Shared Documents/MyProjectfiles\" -TargetUrl \"/sites/otherproject/Shared Documents\" -Overwrite"
   },
@@ -956,10 +900,6 @@
     "Command": "Copy-PnPFolder -SourceUrl \"SubSite1/Documents/company.docx\" -TargetUrl \"SubSite2/Documents\""
   },
   {
-    "Rank": 11,
-    "Command": "$job = Copy-PnPFolder -SourceUrl \"Shared Documents/company.docx\" -TargetUrl \"SubSite2/Shared Documents\" -NoWait $jobStatus = Receive-PnPCopyMoveJobStatus -Job $result if($jobStatus.JobState == 0) {   Write-Host \"Job finished\" }"
-  },
-  {
     "Rank": 1,
     "Command": "Copy-PnPList -Identity \"My List\" -Title \"Copy of My List\""
   },
@@ -973,14 +913,10 @@
   },
   {
     "Rank": 4,
-    "Command": "$list = Get-PnPList -Identity \"My List\" Copy-PnPList -Identity $list -Title \"My copied list\""
-  },
-  {
-    "Rank": 5,
     "Command": "Get-PnPList | ? Title -like \"*Test*\" | Copy-PnPList -DestinationWebUrl https://contoso.sharepoint.com/sites/hrdepartment"
   },
   {
-    "Rank": 6,
+    "Rank": 5,
     "Command": "Copy-PnPList -SourceListUrl https://contoso.sharepoint.com/sites/templates/lists/mylist -Verbose -DestinationWebUrl https://contoso.sharepoint.com/sites/hrdepartment\\"
   },
   {
@@ -1100,10 +1036,6 @@
     "Command": "Export-PnPTermGroupToXml -Out c:\\output.xml -Identity \"Test Group\""
   },
   {
-    "Rank": 4,
-    "Command": "$termgroup = Get-PnPTermGroup -Identity Test $termgroup | Export-PnPTermGroupToXml -Out c:\\output.xml"
-  },
-  {
     "Rank": 1,
     "Command": "Export-PnPUserInfo -LoginName user@domain.com -Site \"https://yoursite.sharepoint.com/sites/team\""
   },
@@ -1186,10 +1118,6 @@
   {
     "Rank": 3,
     "Command": "Get-PnPApp -Identity 2646ccc3-6a2b-46ef-9273-81411cbbb60f"
-  },
-  {
-    "Rank": 1,
-    "Command": "$accessToken = Get-PnPAppAuthAccessToken"
   },
   {
     "Rank": 1,
@@ -1413,10 +1341,6 @@
   },
   {
     "Rank": 1,
-    "Command": "$ctx = Get-PnPConnection"
-  },
-  {
-    "Rank": 1,
     "Command": "Get-PnPContentType"
   },
   {
@@ -1433,18 +1357,10 @@
   },
   {
     "Rank": 1,
-    "Command": "$url = Get-PnPContentTypePublishingHubUrl Connect-PnPOnline -Url $url Get-PnPContentType"
-  },
-  {
-    "Rank": 1,
     "Command": "Get-PnPContentTypePublishingStatus -ContentType 0x0101"
   },
   {
     "Rank": 1,
-    "Command": "$ctx = Get-PnPContext"
-  },
-  {
-    "Rank": 2,
     "Command": "Connect-PnPOnline -Url $siteAurl -Credentials $credentials $ctx = Get-PnPContext Get-PnPList # returns the lists from site specified with $siteAurl Connect-PnPOnline -Url $siteBurl -Credentials $credentials Get-PnPList # returns the lists from the site specified with $siteBurl Set-PnPContext -Context $ctx # switch back to site A Get-PnPList # returns the lists from site A"
   },
   {
@@ -1813,34 +1729,30 @@
   },
   {
     "Rank": 4,
-    "Command": "(Get-PnPListItem -List Tasks -Fields \"Title\",\"GUID\").FieldValues"
-  },
-  {
-    "Rank": 5,
     "Command": "Get-PnPListItem -List Tasks -Query \"<View><Query><Where><Eq><FieldRef Name='GUID'/><Value Type='Guid'>bd6c5b3b-d960-4ee7-a02c-85dc6cd78cc3</Value></Eq></Where></Query></View>\""
   },
   {
-    "Rank": 6,
+    "Rank": 5,
     "Command": "Get-PnPListItem -List Tasks -Query \"<View><ViewFields><FieldRef Name='Title'/><FieldRef Name='Modified'/></ViewFields><Query><Where><Geq><FieldRef Name='Modified'/><Value Type='DateTime'><Today/></Value></Eq></Where></Query></View>\""
   },
   {
-    "Rank": 7,
+    "Rank": 6,
     "Command": "Get-PnPListItem -List Tasks -PageSize 1000"
   },
   {
-    "Rank": 8,
+    "Rank": 7,
     "Command": "Get-PnPListItem -List Tasks -PageSize 1000 -ScriptBlock { Param($items) $items.Context.ExecuteQuery() } | ForEach-Object { $_.BreakRoleInheritance($true, $true) }"
   },
   {
-    "Rank": 9,
+    "Rank": 8,
     "Command": "Get-PnPListItem -List Samples -FolderServerRelativeUrl \"/sites/contosomarketing/Lists/Samples/Demo\""
   },
   {
-    "Rank": 10,
+    "Rank": 9,
     "Command": "PS D:\\Code> Get-PnPListItem -List \"Shared Documents\" | Select-Object id,@{label=\"Filename\";expression={$_.FieldValues.FileLeafRef}}  Id Filename -- --------  1 Contoso-Financial-Calendar-Q1_68340_97779.pptx  5 Does this work.docx"
   },
   {
-    "Rank": 11,
+    "Rank": 10,
     "Command": "Get-PnPListItem -List Tasks -Id 1 -IncludeContentType"
   },
   {
@@ -1906,10 +1818,6 @@
   {
     "Rank": 6,
     "Command": "Get-PnPMicrosoft365Group -IncludeSiteUrl"
-  },
-  {
-    "Rank": 7,
-    "Command": "$groups = Get-PnPMicrosoft365Group -IncludeOwners $g[0].Owners"
   },
   {
     "Rank": 1,
@@ -1996,16 +1904,8 @@
     "Command": "Get-PnPNavigationNode -Location TopNavigationBar"
   },
   {
-    "Rank": 4,
-    "Command": "$node = Get-PnPNavigationNode -Id 2030 PS> $children = $node.Children"
-  },
-  {
     "Rank": 1,
     "Command": "Get-PnPOrgAssetsLibrary"
-  },
-  {
-    "Rank": 2,
-    "Command": "(Get-PnPOrgAssetsLibrary)[0].OrgAssetsLibraries[0].LibraryUrl.DecodedUrl"
   },
   {
     "Rank": 1,
@@ -2042,14 +1942,6 @@
   {
     "Rank": 1,
     "Command": "Get-PnPPowerShellTelemetryEnabled"
-  },
-  {
-    "Rank": 1,
-    "Command": "$web = Get-PnPWeb Get-PnPProperty -ClientObject $web -Property Id, Lists $web.Lists"
-  },
-  {
-    "Rank": 2,
-    "Command": "$list = Get-PnPList -Identity 'Site Assets' Get-PnPProperty -ClientObject $list -Property Views"
   },
   {
     "Rank": 1,
@@ -2257,10 +2149,6 @@
   },
   {
     "Rank": 1,
-    "Command": "$myrun = Get-PnPSiteDesignRun -WebUrl \"https://contoso.sharepoint.com/sites/project-playbook\" -SiteDesignId cefd782e-sean-4814-a68a-b33b116c302f Get-PnPSiteDesignRunStatus -Run $myrun"
-  },
-  {
-    "Rank": 1,
     "Command": "Get-PnPSiteDesignTask -Identity 501z8c32-4147-44d4-8607-26c2f67cae82"
   },
   {
@@ -2397,38 +2285,30 @@
   },
   {
     "Rank": 9,
-    "Command": "$handler1 = New-PnPExtensibilityHandlerObject -Assembly Contoso.Core.Handlers -Type Contoso.Core.Handlers.MyExtensibilityHandler1 $handler2 = New-PnPExtensibilityHandlerObject -Assembly Contoso.Core.Handlers -Type Contoso.Core.Handlers.MyExtensibilityHandler2 Get-PnPSiteTemplate -Out NewTemplate.xml -ExtensibilityHandlers $handler1,$handler2"
-  },
-  {
-    "Rank": 10,
     "Command": "Get-PnPSiteTemplate -Out template.pnp -PersistMultiLanguageResources"
   },
   {
-    "Rank": 11,
+    "Rank": 10,
     "Command": "Get-PnPSiteTemplate -Out template.pnp -PersistMultiLanguageResources -ResourceFilePrefix MyResources"
   },
   {
-    "Rank": 12,
-    "Command": "$template = Get-PnPSiteTemplate -OutputInstance"
-  },
-  {
-    "Rank": 13,
+    "Rank": 11,
     "Command": "Get-PnPSiteTemplate -Out template.pnp -ContentTypeGroups \"Group A\",\"Group B\""
   },
   {
-    "Rank": 14,
+    "Rank": 12,
     "Command": "Get-PnPSiteTemplate -Out template.pnp -ExcludeContentTypesFromSyndication"
   },
   {
-    "Rank": 15,
+    "Rank": 13,
     "Command": "Get-PnPSiteTemplate -Out template.pnp -ListsToExtract \"Title of List One\",\"95c4efd6-08f4-4c67-94ae-49d696ba1298\",\"Title of List Three\""
   },
   {
-    "Rank": 16,
+    "Rank": 14,
     "Command": "Get-PnPSiteTemplate -Out template.xml -Handlers Fields, ContentTypes, SupportedUILanguages -PersistMultiLanguageResources"
   },
   {
-    "Rank": 17,
+    "Rank": 15,
     "Command": "Connect-PnPOnline -Url \"https://contoso.sharepoint.com/sites/yourContentCenter\"  Get-PnPSiteTemplate -Out MyModels.pnp -Handlers SyntexModels"
   },
   {
@@ -2773,10 +2653,6 @@
   },
   {
     "Rank": 5,
-    "Command": "$term = Get-PnPTerm -Identity \"Small Finance\" -TermSet \"Departments\" -TermGroup \"Corporate\" -Includes Labels $term.Labels"
-  },
-  {
-    "Rank": 6,
     "Command": "Get-PnPTerm -Identity \"Small Finance\" -TermSet \"Departments\" -TermGroup \"Corporate\" -Recursive -IncludeDeprecated"
   },
   {
@@ -2870,10 +2746,6 @@
   {
     "Rank": 1,
     "Command": "Get-PnPUserOneDriveQuota -Account 'user@domain.com'"
-  },
-  {
-    "Rank": 2,
-    "Command": "(Get-PnPUserOneDriveQuota -Account 'user@domain.com') / 1gb"
   },
   {
     "Rank": 1,
@@ -3029,10 +2901,6 @@
   },
   {
     "Rank": 1,
-    "Command": "$batch = New-PnPBatch Add-PnPListItem -List \"DemoList\" -Values @{\"Title\"=\"Demo Item 1\"} -Batch $batch Add-PnPListItem -List \"DemoList\" -Values @{\"Title\"=\"Demo Item 2\"} -Batch $batch Add-PnPListItem -List \"DemoList\" -Values @{\"Title\"=\"Demo Item 3\"} -Batch $batch Invoke-PnPBatch -Batch $batch"
-  },
-  {
-    "Rank": 1,
     "Command": "Invoke-PnPListDesign -Identity 5c73382d-9643-4aa0-9160-d0cba35e40fd"
   },
   {
@@ -3065,10 +2933,6 @@
   },
   {
     "Rank": 2,
-    "Command": "$script = Get-PnPSiteScriptFromList -Url \"https://contoso.sharepoint.com/sites/mytemplatesite/lists/Sample\" Invoke-PnPSiteScript -Script $script"
-  },
-  {
-    "Rank": 3,
     "Command": "Get-PnPSiteScript | ? { $_.Title -like \"*Test*\"} | Invoke-PnPSiteScript -WebUrl https://contoso.sharepoint.com/sites/mydemosite"
   },
   {
@@ -3109,14 +2973,10 @@
   },
   {
     "Rank": 7,
-    "Command": "$handler1 = New-PnPExtensibilityHandlerObject -Assembly Contoso.Core.Handlers -Type Contoso.Core.Handlers.MyExtensibilityHandler1 $handler2 = New-PnPExtensibilityHandlerObject -Assembly Contoso.Core.Handlers -Type Contoso.Core.Handlers.MyExtensibilityHandler2 Invoke-PnPSiteTemplate -Path NewTemplate.xml -ExtensibilityHandlers $handler1,$handler2"
-  },
-  {
-    "Rank": 8,
     "Command": "Invoke-PnPSiteTemplate -Path .\\ -InputInstance $template"
   },
   {
-    "Rank": 9,
+    "Rank": 8,
     "Command": "Invoke-PnPSiteTemplate -Path .\\template.xml -TemplateId \"MyTemplate\""
   },
   {
@@ -3170,10 +3030,6 @@
   {
     "Rank": 4,
     "Command": "Move-PnPFile -SourceUrl \"/sites/project/Shared Documents/Archive\" -TargetUrl \"/sites/archive/Project\" -AllowSchemaMismatch -AllowSmallerVersionLimitOnDestination"
-  },
-  {
-    "Rank": 5,
-    "Command": "$job = Move-PnPFile -SourceUrl \"Shared Documents/company.docx\" -TargetUrl \"SubSite2/Shared Documents\" -NoWait $jobStatus = Receive-PnPCopyMoveJobStatus -Job $result if($jobStatus.JobState == 0) {   Write-Host \"Job finished\" }"
   },
   {
     "Rank": 1,
@@ -3254,18 +3110,6 @@
   {
     "Rank": 3,
     "Command": "New-PnPAzureCertificate -OutPfx pnp.pfx -OutCert pnp.cer -CertificatePassword (ConvertTo-SecureString -String \"pass@word1\" -AsPlainText -Force)"
-  },
-  {
-    "Rank": 1,
-    "Command": "$batch = New-PnPBatch Add-PnPListItem -List \"DemoList\" -Values @{\"Title\"=\"Demo Item 1\"} -Batch $batch Add-PnPListItem -List \"DemoList\" -Values @{\"Title\"=\"Demo Item 2\"} -Batch $batch Add-PnPListItem -List \"DemoList\" -Values @{\"Title\"=\"Demo Item 3\"} -Batch $batch Invoke-PnPBatch -Batch $batch"
-  },
-  {
-    "Rank": 2,
-    "Command": "$batch = New-PnPBatch 1..50 | Foreach-Object{Remove-PnPListItem -List \"DemoList\" -Identity $_ -Batch $batch} Invoke-PnPBatch -Batch $batch"
-  },
-  {
-    "Rank": 1,
-    "Command": "$handler = New-PnPExtensibilityHandlerObject -Assembly Contoso.Core.Handlers -Type Contoso.Core.Handlers.MyExtensibilityHandler Get-PnPSiteTemplate -Out NewTemplate.xml -ExtensibilityHandlers $handler"
   },
   {
     "Rank": 1,
@@ -3409,10 +3253,6 @@
   },
   {
     "Rank": 1,
-    "Command": "$template = New-PnPSiteTemplate"
-  },
-  {
-    "Rank": 1,
     "Command": "New-PnPSiteTemplateFromFolder -Out template.xml"
   },
   {
@@ -3473,39 +3313,11 @@
   },
   {
     "Rank": 1,
-    "Command": "$sequence = New-PnPTenantSequence"
-  },
-  {
-    "Rank": 2,
-    "Command": "$sequence = New-PnPTenantSequence -Id \"MySequence\""
-  },
-  {
-    "Rank": 1,
-    "Command": "$site = New-PnPTenantSequenceCommunicationSite -Url \"/sites/mycommunicationsite\" -Title \"My Team Site\""
-  },
-  {
-    "Rank": 1,
-    "Command": "$site = New-PnPTenantSequenceTeamNoGroupSite -Url \"/sites/MyTeamSite\" -Title \"My Team Site\""
-  },
-  {
-    "Rank": 1,
-    "Command": "$site = New-PnPTenantSequenceTeamNoGroupSubSite -Url \"MyTeamSubsite\" -Title \"My Team Site\" -TimeZoneId 4"
-  },
-  {
-    "Rank": 1,
-    "Command": "$site = New-PnPTenantSequenceTeamSite -Alias \"MyTeamSite\" -Title \"My Team Site\""
-  },
-  {
-    "Rank": 1,
     "Command": "New-PnPTenantSite -Title Contoso -Url \"https://tenant.sharepoint.com/sites/contoso\" -Owner user@example.org -TimeZone 4 -Template STS#0"
   },
   {
     "Rank": 2,
     "Command": "New-PnPTenantSite -Title Contoso -Url /sites/contososite -Owner user@example.org -TimeZone 4 -Template STS#0"
-  },
-  {
-    "Rank": 1,
-    "Command": "$template = New-PnPTenantTemplate"
   },
   {
     "Rank": 1,
@@ -3525,14 +3337,10 @@
   },
   {
     "Rank": 1,
-    "Command": "@\"   {   \"value\": [     {       \"IdName\": \"mikaels@contoso.com\",       \"Department\": \"PnP\",     }, \t{       \"IdName\": \"vesaj@contoso.com\",       \"Department\": \"PnP\",     }       ] } \"@ > profiles.json  New-PnPUPABulkImportJob -Folder \"Shared Documents\" -Path profiles.json -IdProperty \"IdName\" -UserProfilePropertyMapping @{\"Department\"=\"Department\"}"
-  },
-  {
-    "Rank": 2,
     "Command": "New-PnPUPABulkImportJob -Url \"https://{tenant}.sharepoint.com/Shared Documents/profiles.json\" -IdProperty \"IdName\" -UserProfilePropertyMapping @{\"Department\"=\"Department\"}"
   },
   {
-    "Rank": 3,
+    "Rank": 2,
     "Command": "New-PnPUPABulkImportJob -Url \"https://{tenant}.sharepoint.com/sites/userprofilesync/Shared Documents/profiles.json\" -IdProperty \"IdName\" -UserProfilePropertyMapping @{\"Department\"=\"Department\"} -Wait -Verbose"
   },
   {
@@ -3574,10 +3382,6 @@
   {
     "Rank": 3,
     "Command": "Read-PnPSiteTemplate -Xml $xml"
-  },
-  {
-    "Rank": 4,
-    "Command": "$stream = Get-PnPFile -Url \"/sites/templates/Site Templates/sample1.pnp\" -AsMemoryStream Read-PnPSiteTemplate -Stream $stream"
   },
   {
     "Rank": 1,
@@ -3708,10 +3512,6 @@
     "Command": "Remove-PnPDeletedMicrosoft365Group -Identity 38b32e13-e900-4d95-b860-fb52bc07ca7f"
   },
   {
-    "Rank": 2,
-    "Command": "$group = Get-PnPDeletedMicrosoft365Group -Identity 38b32e13-e900-4d95-b860-fb52bc07ca7f Remove-PnPDeletedMicrosoft365Group -Identity $group"
-  },
-  {
     "Rank": 1,
     "Command": "Remove-PnPEventReceiver -Identity fb689d0e-eb99-4f13-beb3-86692fd39f22"
   },
@@ -3746,10 +3546,6 @@
   {
     "Rank": 9,
     "Command": "Remove-PnPEventReceiver -Scope All"
-  },
-  {
-    "Rank": 1,
-    "Command": "$user = Get-PnPExternalUser -Filter someone@example.com Remove-PnPExternalUser -UniqueIDs @($user.UniqueId)"
   },
   {
     "Rank": 1,
@@ -3889,10 +3685,6 @@
   },
   {
     "Rank": 3,
-    "Command": "$batch = New-PnPBatch 1..50 | Foreach-Object{Remove-PnPListItem -List \"DemoList\" -Identity $_ -Batch $batch} Invoke-PnPBatch -Batch $batch"
-  },
-  {
-    "Rank": 4,
     "Command": "Remove-PnPListItem -List \"Demo List\""
   },
   {
@@ -4016,10 +3808,6 @@
     "Command": "Remove-PnPPageComponent -Page Home -InstanceId a2875399-d6ff-43a0-96da-be6ae5875f82"
   },
   {
-    "Rank": 2,
-    "Command": "$webpart = Get-PnPPageComponent -Page \"Home\" | Where-Object { $_.Title -eq \"Site activity\" } Remove-PnPPageComponent -Page \"Home\" -InstanceId $webpart.InstanceId -Force"
-  },
-  {
     "Rank": 1,
     "Command": "Remove-PnPPlannerRoster -Identity \"6519868f-868f-6519-8f86-19658f861965\""
   },
@@ -4096,10 +3884,6 @@
     "Command": "Remove-PnPSiteDesign -Identity 5c73382d-9643-4aa0-9160-d0cba35e40fd"
   },
   {
-    "Rank": 2,
-    "Command": "$siteDesign = Get-PnPSiteDesign -Identity c234b254-b51a-4ca8-8ba3-939659a66832 Remove-PnPSiteDesign -Identity $siteDesign"
-  },
-  {
     "Rank": 1,
     "Command": "Remove-PnPSiteDesignTask -Identity 5c73382d-9643-4aa0-9160-d0cba35e40fd"
   },
@@ -4114,10 +3898,6 @@
   {
     "Rank": 1,
     "Command": "Remove-PnPSiteScript -Identity 5c73382d-9643-4aa0-9160-d0cba35e40fd"
-  },
-  {
-    "Rank": 2,
-    "Command": "$sitescript = Get-PnPSiteScript -Identity MySiteScript Remove-PnPSiteScript -Identity $sitescript"
   },
   {
     "Rank": 1,
@@ -4276,14 +4056,6 @@
     "Command": "Remove-PnPWebhookSubscription -List MyList -Identity ea1533a8-ff03-415b-a7b6-517ee50db8b6"
   },
   {
-    "Rank": 2,
-    "Command": "$subscriptions = Get-PnPWebhookSubscriptions -List MyList Remove-PnPWebhookSubscription -Identity $subscriptions[0] -List MyList"
-  },
-  {
-    "Rank": 3,
-    "Command": "$subscriptions = Get-PnPWebhookSubscriptions -List MyList $subscriptions[0] | Remove-PnPWebhookSubscription -List MyList"
-  },
-  {
     "Rank": 1,
     "Command": "Remove-PnPWebPart -ServerRelativePageUrl \"/sites/demo/sitepages/home.aspx\" -Identity a2875399-d6ff-43a0-96da-be6ae5875f82"
   },
@@ -4310,10 +4082,6 @@
   {
     "Rank": 1,
     "Command": "Rename-PnPFolder -Folder Documents/Reports -TargetFolderName 'Archived Reports'"
-  },
-  {
-    "Rank": 1,
-    "Command": "$currentSiteUrl = \"https://<tenant>.sharepoint.com/site/samplesite\" $updatedSiteUrl = \"https://<tenant>.sharepoint.com/site/renamed\" Rename-PnPTenantSite -Identity $currentSiteUrl -NewSiteUrl $updatedSiteUrl"
   },
   {
     "Rank": 1,
@@ -4396,10 +4164,6 @@
     "Command": "Restore-PnPDeletedMicrosoft365Group -Identity 38b32e13-e900-4d95-b860-fb52bc07ca7f"
   },
   {
-    "Rank": 2,
-    "Command": "$group = Get-PnPDeletedMicrosoft365Group -Identity 38b32e13-e900-4d95-b860-fb52bc07ca7f Restore-PnPDeletedMicrosoft365Group -Identity $group"
-  },
-  {
     "Rank": 1,
     "Command": "Restore-PnPFileVersion -Url Documents/MyDocument.docx -Identity 512"
   },
@@ -4469,14 +4233,6 @@
   },
   {
     "Rank": 2,
-    "Command": "$template = Read-PnPSiteTemplate -Path template.xml Save-PnPSiteTemplate -Template $template -Out .\\template.pnp"
-  },
-  {
-    "Rank": 3,
-    "Command": "$template = Read-PnPSiteTemplate -Path template.xml Save-PnPSiteTemplate -Template $template -Out .\\template.pnp -Schema V202002"
-  },
-  {
-    "Rank": 4,
     "Command": "Read-PnPSiteTemplate -Path template.xml | Save-PnPSiteTemplate -Out .\\template.pnp"
   },
   {
@@ -4485,14 +4241,6 @@
   },
   {
     "Rank": 2,
-    "Command": "$template = Read-PnPTenantTemplate -Path template.xml Save-PnPTenantTemplate -Template $template -Out .\\template.pnp"
-  },
-  {
-    "Rank": 3,
-    "Command": "$template = Read-PnPTenantTemplate -Path template.xml Save-PnPTenantTemplate -Template $template -Out .\\template.pnp -Schema V202002"
-  },
-  {
-    "Rank": 4,
     "Command": "Read-PnPTenantTemplate -Path template.xml | Save-PnPTenantTemplate -Out .\\template.pnp"
   },
   {
@@ -4517,7 +4265,7 @@
   },
   {
     "Rank": 2,
-    "Command": "Set-PnPApplicationCustomizer -ClientSideComponentId aa66f67e-46c0-4474-8a82-42bf467d07f2 -Scope web -ClientSideComponentProperties \"{"
+    "Command": "Set-PnPApplicationCustomizer -ClientSideComponentId aa66f67e-46c0-4474-8a82-42bf467d07f2 -Scope web -ClientSideComponentProperties \"{`\"sourceTermSet`\":`\"PnP-CollabFooter-SharedLinks`\",`\"personalItemsStorageProperty`\":`\"PnP-CollabFooter-MyLinks`\"}\""
   },
   {
     "Rank": 1,
@@ -4638,14 +4386,6 @@
   {
     "Rank": 4,
     "Command": "Set-PnPDefaultColumnValues -List Documents -Field MyPeopleField -Value \"1;#Foo Bar\""
-  },
-  {
-    "Rank": 5,
-    "Command": "$user = New-PnPUser -LoginName foobar@contoso.com Set-PnPDefaultColumnValues -List Documents -Field MyPeopleField -Value \"$($user.Id);#$($user.LoginName)\""
-  },
-  {
-    "Rank": 6,
-    "Command": "$user1 = New-PnPUser -LoginName user1@contoso.com $user2 = New-PnPUser -LoginName user2@contoso.com Set-PnPDefaultColumnValues -List Documents -Field MyMultiPeopleField -Value \"$($user1.Id);#$($user1.LoginName)\",\"$($user2.Id);#$($user2.LoginName)\""
   },
   {
     "Rank": 1,
@@ -4893,10 +4633,6 @@
   },
   {
     "Rank": 5,
-    "Command": "$batch = New-PnPBatch for($i=1;$i -lt 100;$i++) {     Set-PnPListItem -List \"Demo List\" -Identity $i -Values @{\"Title\"=\"Updated Title\"} -Batch $batch } Invoke-PnPBatch -Batch $batch"
-  },
-  {
-    "Rank": 6,
     "Command": "Set-PnPListItem -List \"Demo List\" -Identity 1 -Values @{\"Editor\"=\"testuser@domain.com\"} -UpdateType UpdateOverwriteVersion"
   },
   {
@@ -5117,7 +4853,7 @@
   },
   {
     "Rank": 1,
-    "Command": "Set-PnPPageWebPart -Page Home -Identity a2875399-d6ff-43a0-96da-be6ae5875f82 -PropertiesJson \""
+    "Command": "Set-PnPPageWebPart -Page Home -Identity a2875399-d6ff-43a0-96da-be6ae5875f82 -PropertiesJson \"`\"Property1`\"=`\"Value1`\"\""
   },
   {
     "Rank": 2,
@@ -5249,10 +4985,6 @@
   },
   {
     "Rank": 2,
-    "Command": "$design = Get-PnPSiteDesign -Identity 046e2e76-67ba-46ca-a5f6-8eb418a7821e Set-PnPSiteDesign -Identity $design -Title \"My Updated Company Design\""
-  },
-  {
-    "Rank": 3,
     "Command": "Set-PnPSiteDesign -Identity 046e2e76-67ba-46ca-a5f6-8eb418a7821e -Title \"My Company Design\" -Description \"My description\" -ThumbnailUrl \"https://contoso.sharepoint.com/sites/templates/my images/logo.png\""
   },
   {
@@ -5270,14 +5002,6 @@
   {
     "Rank": 1,
     "Command": "Set-PnPSiteScript -Identity f1d55d9b-b116-4f54-bc00-164a51e7e47f -Title \"My Site Script\""
-  },
-  {
-    "Rank": 2,
-    "Command": "$script = Get-PnPSiteScript -Identity f1d55d9b-b116-4f54-bc00-164a51e7e47f  Set-PnPSiteScript -Identity $script -Title \"My Site Script\""
-  },
-  {
-    "Rank": 3,
-    "Command": "$content = Get-PnPSiteScriptFromWeb -Url https://contoso.sharepoint.com/sites/SampleSite -IncludeAll  Set-PnPSiteScript -Identity f1d55d9b-b116-4f54-bc00-164a51e7e47f -Content $content"
   },
   {
     "Rank": 1,
@@ -5572,10 +5296,6 @@
     "Command": "Set-PnPWebhookSubscription -List MyList -Subscription ea1533a8-ff03-415b-a7b6-517ee50db8b6 -NotificationUrl https://my-func.azurewebsites.net/webhook -ExpirationDate \"2017-09-01\""
   },
   {
-    "Rank": 3,
-    "Command": "$subscriptions = Get-PnPWebhookSubscriptions -List MyList $updated = $subscriptions[0] $updated.ExpirationDate = \"2017-10-01\" Set-PnPWebhookSubscription -List MyList -Subscription $updated"
-  },
-  {
     "Rank": 1,
     "Command": "Set-PnPWebPartProperty -ServerRelativePageUrl /sites/demo/sitepages/home.aspx -Identity ccd2c98a-c9ae-483b-ae72-19992d583914 -Key \"Title\" -Value \"New Title\""
   },
@@ -5612,10 +5332,6 @@
     "Command": "Set-PnPWikiPageContent -ServerRelativePageUrl /sites/PnPWikiCollection/SitePages/OurWikiPage.aspx -Path .\\sampleblog.html"
   },
   {
-    "Rank": 2,
-    "Command": "$htmlContent = \"<div>test</div>\" Set-PnPWikiPageContent -ServerRelativePageUrl /sites/PnPWikiCollection/SitePages/OurWikiPage.aspx -Content $htmlContent"
-  },
-  {
     "Rank": 1,
     "Command": "Submit-PnPSearchQuery -Query \"finance\""
   },
@@ -5649,18 +5365,10 @@
   },
   {
     "Rank": 2,
-    "Command": "$users = Get-PnPAzureADUser -Filter \"jobTitle eq 'IT Administrator'\" Sync-PnPSharePointUserProfilesFromAzureActiveDirectory -UserProfilePropertyMapping @{\"CostCenter\"=\"extension_b0b5aaa58a0a4287acd826c5b8330e48_CostCenter\"} -Users $users"
-  },
-  {
-    "Rank": 3,
-    "Command": "$delta = Get-PnPAzureADUser -Delta -DeltaToken $delta.DeltaToken Sync-PnPSharePointUserProfilesFromAzureActiveDirectory -UserProfilePropertyMapping @{\"CostCenter\"=\"extension_b0b5aaa58a0a4287acd826c5b8330e48_CostCenter\"} -Users $delta.Users"
-  },
-  {
-    "Rank": 4,
     "Command": "Sync-PnPSharePointUserProfilesFromAzureActiveDirectory -UserProfilePropertyMapping @{\"CostCenter\"=\"extension_b0b5aaa58a0a4287acd826c5b8330e48_CostCenter\"} -Folder \"User Profile Sync\""
   },
   {
-    "Rank": 5,
+    "Rank": 3,
     "Command": "Sync-PnPSharePointUserProfilesFromAzureActiveDirectory -UserProfilePropertyMapping @{\"CostCenter\"=\"extension_b0b5aaa58a0a4287acd826c5b8330e48_CostCenter\"} -Folder \"User Profile Sync\\Jobs\" -Wait -Verbose"
   },
   {
