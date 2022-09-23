@@ -26,19 +26,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Data\PnP.PowerShell.Suggestions.json" />
-    <Content Include="PnP.PowerShell.Predictor.deps.json" />
-    <Content Include="PnP.PowerShell.Predictor.dll" />
-    <Content Include="PnP.PowerShell.Predictor.pdb" />
+    <Content Include="PnP.PowerShell.Predictor\Data\PnP.PowerShell.Suggestions.json" />
+    <Content Include="PnP.PowerShell.Predictor\PnP.PowerShell.Predictor.deps.json" />
+    <Content Include="PnP.PowerShell.Predictor\PnP.PowerShell.Predictor.dll" />
+    <Content Include="PnP.PowerShell.Predictor\PnP.PowerShell.Predictor.pdb" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PnP.PowerShell.Predictor.Module.psd1" />
-    <Compile Include="PnP.PowerShell.Predictor.Module.psm1" />
-    <Compile Include="scripts\Update-PnPPowerShellPredictions.ps1" />
+    <Compile Include="PnP.PowerShell.Predictor\PnP.PowerShell.Predictor.psd1" />
+    <Compile Include="PnP.PowerShell.Predictor\PnP.PowerShell.Predictor.psm1" />
+    <Compile Include="PnP.PowerShell.Predictor\scripts\Update-PnPPowerShellPredictions.ps1" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="scripts\" />
+    <Folder Include="PnP.PowerShell.Predictor\Data\" />
+    <Folder Include="PnP.PowerShell.Predictor\" />
+    <Folder Include="PnP.PowerShell.Predictor\scripts\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="Build" />
