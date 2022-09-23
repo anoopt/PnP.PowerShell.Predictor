@@ -9,6 +9,6 @@ namespace PnP.PowerShell.Predictor
     internal static class PnPPowerShellPredictorConstants
     {
         public const string SuggestionsFileName = "PnP.PowerShell.Suggestions.json";
-        public const string SuggestionsFileRelativePath = "\\Mock\\Data";
+        public const string SuggestionsFileRelativePath = "\\Data";
     }
 }

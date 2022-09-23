@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Mock\Data\PnP.PowerShell.Suggestions.json">
+    <None Update="Data\PnP.PowerShell.Suggestions.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
