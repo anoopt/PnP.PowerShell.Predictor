@@ -225,7 +225,7 @@
   },
   {
     "Rank": 3,
-    "Command": "Add-PnPHubToHubAssociation -SourceUrl \"https://yourtenant.sharepoint.com/sites/secondlevelhub\" -TargetUrl \"https://yourtenant.sharepoint.com/sites/toplevelhub\" Add-PnPHubToHubAssociation -SourceUrl \"https://yourtenant.sharepoint.com/sites/thirdlevelhub\" -TargetUrl \"https://yourtenant.sharepoint.com/sites/secondlevelhub\""
+    "Command": "Add-PnPHubToHubAssociation -SourceUrl \"https://yourtenant.sharepoint.com/sites/secondlevelhub\" -TargetUrl \"https://yourtenant.sharepoint.com/sites/toplevelhub\" ; Add-PnPHubToHubAssociation -SourceUrl \"https://yourtenant.sharepoint.com/sites/thirdlevelhub\" -TargetUrl \"https://yourtenant.sharepoint.com/sites/secondlevelhub\""
   },
   {
     "Rank": 1,
@@ -533,7 +533,7 @@
   },
   {
     "Rank": 3,
-    "Command": "Add-PnPStoredCredential -Name \"https://tenant.sharepoint.com\" -Username yourname@tenant.onmicrosoft.com -Password (ConvertTo-SecureString -String \"YourPassword\" -AsPlainText -Force) Connect-PnPOnline -Url \"https://tenant.sharepoint.com/sites/mydemosite\""
+    "Command": "Add-PnPStoredCredential -Name \"https://tenant.sharepoint.com\" -Username yourname@tenant.onmicrosoft.com -Password (ConvertTo-SecureString -String \"YourPassword\" -AsPlainText -Force) ; Connect-PnPOnline -Url \"https://tenant.sharepoint.com/sites/mydemosite\""
   },
   {
     "Rank": 1,
@@ -765,7 +765,7 @@
   },
   {
     "Rank": 11,
-    "Command": "Connect-PnPOnline -ManagedIdentity Get-PnPTeamsTeam"
+    "Command": "Connect-PnPOnline -ManagedIdentity ; Get-PnPTeamsTeam"
   },
   {
     "Rank": 12,
@@ -5005,7 +5005,7 @@
   },
   {
     "Rank": 1,
-    "Command": "Set-PnPTenantSite -Identity \"https://contoso.sharepoint.com/sites/team1\" -LockState NoAccess Set-PnPTenant -NoAccessRedirectUrl \"http://www.contoso.com\""
+    "Command": "Set-PnPTenantSite -Identity \"https://contoso.sharepoint.com/sites/team1\" -LockState NoAccess ; Set-PnPTenant -NoAccessRedirectUrl \"http://www.contoso.com\""
   },
   {
     "Rank": 2,

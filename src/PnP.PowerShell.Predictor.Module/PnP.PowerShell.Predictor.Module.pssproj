@@ -27,9 +27,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="PnP.PowerShell.Predictor\Data\PnP.PowerShell.Suggestions.json" />
-    <Content Include="PnP.PowerShell.Predictor\PnP.PowerShell.Predictor.deps.json" />
     <Content Include="PnP.PowerShell.Predictor\PnP.PowerShell.Predictor.dll" />
-    <Content Include="PnP.PowerShell.Predictor\PnP.PowerShell.Predictor.pdb" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PnP.PowerShell.Predictor\PnP.PowerShell.Predictor.psd1" />
