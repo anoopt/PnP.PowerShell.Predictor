@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation.Subsystem.Prediction;
+using System.Net.Http.Json;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -11,12 +12,16 @@ using PnP.PowerShell.Predictor.Abstractions.Models;
 
 namespace PnP.PowerShell.Predictor.Services
 {
-    public class PnPPowerShellPredictorService : IPnPPowerShellPredictorService
+    internal class PnPPowerShellPredictorService : IPnPPowerShellPredictorService
     {
         private List<Suggestion>? _allPredictiveSuggestions;
+        private readonly HttpClient _client;
+        private readonly string _commandsFilePath;
 
-        public PnPPowerShellPredictorService()
+        public PnPPowerShellPredictorService(IPnPPowerShellContext pnpPowerShellContext)
         {
+            _commandsFilePath = string.Format(PnPPowerShellPredictorConstants.CommandsFilePath, pnpPowerShellContext.PnPPowerShellVersion);
+            _client = new HttpClient();
             RequestAllPredictiveCommands();
         }
 
@@ -26,10 +31,22 @@ namespace PnP.PowerShell.Predictor.Services
             //TODO: if the http request fails then fallback to local JSON file?
             _ = Task.Run(async () =>
               {
-                  string executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                  string fileName = Path.Combine($"{executableLocation}{PnPPowerShellPredictorConstants.SuggestionsFileRelativePath}", PnPPowerShellPredictorConstants.SuggestionsFileName);
-                  string jsonString = await File.ReadAllTextAsync(fileName);
-                  _allPredictiveSuggestions = JsonSerializer.Deserialize<List<Suggestion>>(jsonString)!;
+                  try
+                  {
+                      _allPredictiveSuggestions = await _client.GetFromJsonAsync<List<Suggestion>>(_commandsFilePath);
+                  }
+                  catch (Exception e)
+                  {
+                      _allPredictiveSuggestions = null;
+                  }
+
+                  if (_allPredictiveSuggestions == null)
+                  {
+                      string executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                      string fileName = Path.Combine($"{executableLocation}{PnPPowerShellPredictorConstants.SuggestionsFileRelativePath}", PnPPowerShellPredictorConstants.SuggestionsFileName);
+                      string jsonString = await File.ReadAllTextAsync(fileName);
+                      _allPredictiveSuggestions = JsonSerializer.Deserialize<List<Suggestion>>(jsonString)!;
+                  }
               });
         }
 

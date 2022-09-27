@@ -10,5 +10,6 @@ namespace PnP.PowerShell.Predictor
     {
         public const string SuggestionsFileName = "PnP.PowerShell.Suggestions.json";
         public const string SuggestionsFileRelativePath = "\\Data";
+        public const string CommandsFilePath = "https://raw.githubusercontent.com/anoopt/spfx-ace-image-button-text/master/predictor-commands/{0}.json";
     }
 }

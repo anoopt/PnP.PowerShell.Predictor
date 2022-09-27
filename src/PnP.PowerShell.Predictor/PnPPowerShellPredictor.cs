@@ -9,10 +9,11 @@ using System.Management.Automation.Subsystem.Prediction;
 using System.Reflection;
 using PnP.PowerShell.Predictor.Abstractions.Interfaces;
 using PnP.PowerShell.Predictor.Services;
+using PnP.PowerShell.Predictor.Utilities;
 
 namespace PnP.PowerShell.Predictor
 {
-    public class PnPPowerShellPredictor : ICommandPredictor
+    public class PnPPowerShellPredictor : ICommandPredictor, IDisposable
     {
         private readonly Guid _guid;
 
@@ -32,13 +33,22 @@ namespace PnP.PowerShell.Predictor
         public string Description => "PnP PowerShell predictor";
 
         private IPnPPowerShellPredictorService _pnpPowerShellPredictorService;
-        
+
+        private PowerShellRuntime? _powerShellRuntime;
+
+        private IPnPPowerShellContext _pnpPowerShellContext;
+
 
         internal PnPPowerShellPredictor(string guid)
         {
             _guid = new Guid(guid);
-            _pnpPowerShellPredictorService = new PnPPowerShellPredictorService();
-
+            _powerShellRuntime = new PowerShellRuntime();
+            Task.Run(() =>
+            {
+                _pnpPowerShellContext = new PnPPowerShellContext(_powerShellRuntime);
+                _pnpPowerShellContext.UpdateContext();
+                _pnpPowerShellPredictorService = new PnPPowerShellPredictorService(_pnpPowerShellContext);
+            });
         }
 
         /// <summary>
@@ -53,6 +63,15 @@ namespace PnP.PowerShell.Predictor
             var result = _pnpPowerShellPredictorService.GetSuggestions(context);
 
             return new SuggestionPackage(result);
+        }
+
+        public void Dispose()
+        {
+            if (_powerShellRuntime != null)
+            {
+                _powerShellRuntime.Dispose();
+                _powerShellRuntime = null;
+            }
         }
 
         #region "interface methods for processing feedback"
