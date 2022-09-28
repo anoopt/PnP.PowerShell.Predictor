@@ -62,6 +62,11 @@ namespace PnP.PowerShell.Predictor
         {
             var result = _pnpPowerShellPredictorService.GetSuggestions(context);
 
+            if (result is null || cancellationToken.IsCancellationRequested)
+            {
+                return default;
+            }
+
             return new SuggestionPackage(result);
         }
 

@@ -42,10 +42,21 @@ namespace PnP.PowerShell.Predictor.Services
 
                   if (_allPredictiveSuggestions == null)
                   {
-                      string executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                      string fileName = Path.Combine($"{executableLocation}{PnPPowerShellPredictorConstants.SuggestionsFileRelativePath}", PnPPowerShellPredictorConstants.SuggestionsFileName);
-                      string jsonString = await File.ReadAllTextAsync(fileName);
-                      _allPredictiveSuggestions = JsonSerializer.Deserialize<List<Suggestion>>(jsonString)!;
+                      try
+                      {
+                          string executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                          string fileName = Path.Combine($"{executableLocation}{PnPPowerShellPredictorConstants.SuggestionsFileRelativePath}", PnPPowerShellPredictorConstants.SuggestionsFileName);
+                          string jsonString = await File.ReadAllTextAsync(fileName);
+                          _allPredictiveSuggestions = JsonSerializer.Deserialize<List<Suggestion>>(jsonString)!;
+                      }
+                      catch (Exception e)
+                      {
+                          Console.ForegroundColor = ConsoleColor.DarkRed;
+                          Console.Write("Unable to load predictions. Press enter to continue.");
+                          Console.ResetColor();
+                          _allPredictiveSuggestions = null;
+                      }
+                      
                   }
               });
         }
@@ -54,6 +65,11 @@ namespace PnP.PowerShell.Predictor.Services
         {
             var input = context.InputAst.Extent.Text;
             if (string.IsNullOrWhiteSpace(input))
+            {
+                return null;
+            }
+
+            if (_allPredictiveSuggestions == null)
             {
                 return null;
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
+using System.Management.Automation.Runspaces;
 using System.Text;
 using System.Threading.Tasks;
 using PnP.PowerShell.Predictor.Abstractions.Interfaces;
@@ -10,13 +11,15 @@ namespace PnP.PowerShell.Predictor
 {
     internal sealed class PnPPowerShellContext : IPnPPowerShellContext
     {
-        private static readonly Version DefaultVersion = new Version("0.0.0.0");
+        private static readonly Version DefaultVersion = new Version("0.0.0");
         private IPowerShellRuntime _powerShellRuntime;
 
         public Version PnPPowerShellVersion { get; private set; } = DefaultVersion;
 
         public PnPPowerShellContext(IPowerShellRuntime powerShellRuntime) => _powerShellRuntime
             = powerShellRuntime;
+
+        public Runspace DefaultRunspace => _powerShellRuntime.DefaultRunspace;
 
         public void UpdateContext()
         {
@@ -39,7 +42,6 @@ namespace PnP.PowerShell.Predictor
             catch (Exception)
             {
             }
-
             return latestPnPPowerShellVersion;
 
             void ExtractAndSetLatestPnPPowerShellVersion(IEnumerable<PSObject> outputs)
