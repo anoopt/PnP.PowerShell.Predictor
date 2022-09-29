@@ -16,11 +16,11 @@ namespace PnP.PowerShell.Predictor.Services
     {
         private List<Suggestion>? _allPredictiveSuggestions;
         private readonly HttpClient _client;
-        private readonly string _commandsFilePath;
+        private readonly string _suggestionsFilePath;
 
         public PnPPowerShellPredictorService(IPnPPowerShellContext pnpPowerShellContext)
         {
-            _commandsFilePath = string.Format(PnPPowerShellPredictorConstants.CommandsFilePath, pnpPowerShellContext.PnPPowerShellVersion);
+            _suggestionsFilePath = string.Format(PnPPowerShellPredictorConstants.RemoteSuggestionsFilePath, pnpPowerShellContext.PnPPowerShellVersion);
             _client = new HttpClient();
             RequestAllPredictiveCommands();
         }
@@ -33,7 +33,7 @@ namespace PnP.PowerShell.Predictor.Services
               {
                   try
                   {
-                      _allPredictiveSuggestions = await _client.GetFromJsonAsync<List<Suggestion>>(_commandsFilePath);
+                      _allPredictiveSuggestions = await _client.GetFromJsonAsync<List<Suggestion>>(_suggestionsFilePath);
                   }
                   catch (Exception e)
                   {
@@ -45,9 +45,12 @@ namespace PnP.PowerShell.Predictor.Services
                       try
                       {
                           string executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                          string fileName = Path.Combine($"{executableLocation}{PnPPowerShellPredictorConstants.SuggestionsFileRelativePath}", PnPPowerShellPredictorConstants.SuggestionsFileName);
+                          string fileName = Path.Combine($"{executableLocation}{PnPPowerShellPredictorConstants.LocalSuggestionsFileRelativePath}", PnPPowerShellPredictorConstants.LocalSuggestionsFileName);
                           string jsonString = await File.ReadAllTextAsync(fileName);
                           _allPredictiveSuggestions = JsonSerializer.Deserialize<List<Suggestion>>(jsonString)!;
+                          Console.ForegroundColor = ConsoleColor.Yellow;
+                          Console.Write("WARNING: Unable to load predictions from GitHub. Hence loading suggestions of PnP PowerShell 1.11.91. Press enter to continue.");
+                          Console.ResetColor();
                       }
                       catch (Exception e)
                       {
