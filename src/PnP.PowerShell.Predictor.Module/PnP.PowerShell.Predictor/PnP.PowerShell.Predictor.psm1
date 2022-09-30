@@ -30,20 +30,30 @@ elseif ($psReadlineModule -eq $null) {
     }
 }
 
-# Get all the functions
-$functions = @( Get-ChildItem -Path $PSScriptRoot\scripts\*.ps1 -ErrorAction SilentlyContinue )
+$pnpPowerShellModule = Get-Module -Name PnP.PowerShell -ListAvailable | Select Name,Version
 
-# Dot source all the functions
-$functions | ForEach-Object {
-    . $_.FullName
-}
-
-# Export all the functions
-$functions | ForEach-Object {
-    Export-ModuleMember -Function $_.BaseName
+if($pnpPowerShellModule -eq $null) {
+    $shouldImportPredictor = $false
+    throw "Please make sure you have installed PnP.PowerShell module. See - https://pnp.github.io/powershell/"
+} else {
+    Import-Module -Name PnP.PowerShell -Scope Global -WarningAction Ignore
 }
 
 # Import the predictor module
 if ($shouldImportPredictor) {
+
+    # Get all the functions
+    $functions = @( Get-ChildItem -Path $PSScriptRoot\scripts\*.ps1 -ErrorAction SilentlyContinue )
+
+    # Dot source all the functions
+    $functions | ForEach-Object {
+        . $_.FullName
+    }
+
+    # Export all the functions
+    $functions | ForEach-Object {
+        Export-ModuleMember -Function $_.BaseName
+    }
+
     Import-Module (Join-Path -Path $PSScriptRoot -ChildPath PnP.PowerShell.Predictor.dll)
 }

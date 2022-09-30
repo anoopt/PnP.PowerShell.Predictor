@@ -49,7 +49,7 @@ namespace PnP.PowerShell.Predictor.Services
                           string jsonString = await File.ReadAllTextAsync(fileName);
                           _allPredictiveSuggestions = JsonSerializer.Deserialize<List<Suggestion>>(jsonString)!;
                           Console.ForegroundColor = ConsoleColor.Yellow;
-                          Console.Write("WARNING: Unable to load predictions from GitHub. Hence loading suggestions of PnP PowerShell 1.11.91. Press enter to continue.");
+                          Console.Write("WARNING: Unable to load predictions from GitHub. Loading suggestions from local file. Hence some commands from the predictions might not work. Press enter to continue.");
                           Console.ResetColor();
                       }
                       catch (Exception e)

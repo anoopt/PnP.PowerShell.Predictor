@@ -6,7 +6,7 @@ function Update-PnPPowerShellPredictions {
         #$version = $(Get-InstalledModule -Name "PnP.PowerShell").Version;
 
         # Get the predictions file location from GitHub based on the version
-        $url = "https://raw.githubusercontent.com/pnp/powershell/dev/src/Predictor/Data/PnP.Predictor.Suggestions_$($version).json";
+        $url = "https://raw.githubusercontent.com/pnp/powershell/dev/src/Predictor/Data/PnP.Predictor.Suggestions.$($version).json";
 
         # Get the local path to the predictions file in Data folder
         $localPath = "$($PSScriptRoot)\Data\PnP.PowerShell.Suggestions.json";
