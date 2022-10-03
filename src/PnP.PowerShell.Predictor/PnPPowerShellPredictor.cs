@@ -32,6 +32,8 @@ namespace PnP.PowerShell.Predictor
         /// </summary>
         public string Description => "PnP PowerShell predictor";
 
+        private Settings _settings;
+
         private IPnPPowerShellPredictorService _pnpPowerShellPredictorService;
 
         private PowerShellRuntime? _powerShellRuntime;
@@ -45,9 +47,10 @@ namespace PnP.PowerShell.Predictor
             _powerShellRuntime = new PowerShellRuntime();
             Task.Run(() =>
             {
+                _settings = Settings.GetSettings();
                 _pnpPowerShellContext = new PnPPowerShellContext(_powerShellRuntime);
                 _pnpPowerShellContext.UpdateContext();
-                _pnpPowerShellPredictorService = new PnPPowerShellPredictorService(_pnpPowerShellContext);
+                _pnpPowerShellPredictorService = new PnPPowerShellPredictorService(_pnpPowerShellContext, _settings.CommandSearchMethod);
             });
         }
 

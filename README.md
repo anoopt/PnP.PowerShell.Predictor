@@ -63,13 +63,23 @@ Import-Module -Name PnP.PowerShell.Predictor
 
 Once imported, start typing PnP PowerShell cmdlet (e.g. `Connect-PnPOnline`) and see the predictions loading.
 
-## Updating predictions
+### Predictions source warning
 
-When a new version of PnP PowerShell is installed then the predictions can be updated by running the following function
+The module tries to get the version of the cmdlets from GitHub based on the PnP PowerShell version on your machine. In case, it is not able to find the version of cmdlets from GitHub then it will load a set of predictions that are shipped with the module.
+
+Hence some commands from the predictions might not be present in the version on PnP PowerShell on your machine and they might not work.
+
+## Changing predictions search method
+
+By default the module uses `BeginsWith` search i.e. it shows predictions that begins with the input entered. This can be changed to either `Contains` or `Fuzzy` by using the following cmdlet
 
 ```powershell
-Update-PnPPowerShellPredictions
+Set-PnPPredictorSearch -Method Contains|Fuzzy
 ```
+The module then needs to re-imported.
+
+`Contains` - as per the name shows predictions that contain the entered input
+`Fuzzy` - does a Fuzzy search and returns predictions. Sometimes the results might not be as per the expectaion in this case.
 
 ## Uninstallation
 

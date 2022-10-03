@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace PnP.PowerShell.Predictor.Abstractions.Models
 {
-    public class Suggestion
+    public enum CommandSearchMethod
     {
-        public string? CommandName { get; set; }
-        public string? Command { get; set; }
-        public int Rank { get; set; }
+        Fuzzy,
+        Contains,
+        BeginsWith
     }
 }
