@@ -18,7 +18,7 @@ namespace PnP.PowerShell.Predictor.Services
     internal class PnPPowerShellPredictorService : IPnPPowerShellPredictorService
     {
         private List<Suggestion>? _allPredictiveSuggestions;
-        private CommandSearchMethod _commandSearchMethod;
+        private readonly CommandSearchMethod _commandSearchMethod;
         private readonly HttpClient _client;
         private readonly string _suggestionsFilePath;
 
@@ -86,79 +86,67 @@ namespace PnP.PowerShell.Predictor.Services
 
             #region BeginsWith search
 
+           
             /*
-            BenchmarkDotNet=v0.13.2, OS=Windows 10 (10.0.19043.2006/21H1/May2021Update)
-            Intel Core i7-10510U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
-            .NET SDK=6.0.109
-              [Host]     : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
-              DefaultJob : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
+              BenchmarkDotNet=v0.13.2, OS=Windows 10 (10.0.19043.2006/21H1/May2021Update)
+              Intel Core i7-10510U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
+              .NET SDK=6.0.109
+                [Host]     : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
+                DefaultJob : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2 
+            */
 
-            |     Method |     Mean |    Error |   StdDev | Allocated |
-            |----------- |---------:|---------:|---------:|----------:|
-            | BeginsWith | 26.80 ns | 0.555 ns | 0.831 ns |     128 B |
-             */
+           switch (_commandSearchMethod)
+           {
+               /*
+                  |     Method |     Mean |    Error |   StdDev | Allocated |
+                  |----------- |---------:|---------:|---------:|----------:|
+                  | BeginsWith | 26.80 ns | 0.555 ns | 0.831 ns |     128 B |
+               */
+                case CommandSearchMethod.BeginsWith:
+                    filteredSuggestions = _allPredictiveSuggestions?.
+                        Where(pc => pc.CommandName != null && pc.CommandName.ToLower().StartsWith(input.ToLower())).
+                        OrderBy(pc => pc.Rank);
+                    break;
+                /*
+                    |   Method |     Mean |    Error |   StdDev | Allocated |
+                    |--------- |---------:|---------:|---------:|----------:|
+                    | Contains | 27.52 ns | 0.539 ns | 0.901 ns |     128 B |
+                 */
+                case CommandSearchMethod.Contains:
+                    filteredSuggestions = _allPredictiveSuggestions?.
+                        Where(pc => pc.CommandName != null && pc.CommandName.ToLower().Contains(input.ToLower())).
+                        OrderBy(pc => pc.Rank);
+                    break;
+                /*
+                    |Method |     Mean |   Error |  StdDev | Allocated |
+                    |------ |---------:|--------:|--------:|----------:|
+                    | Fuzzy | 959.7 us | 6.49 us | 5.76 us | 115.31 KB |
+                */
+                case CommandSearchMethod.Fuzzy:
+                {
+                    var inputWithoutSpaces = Regex.Replace(input, @"\s+", "");
+                
+                    var matches = new List<Suggestion>();
 
-            if (_commandSearchMethod == CommandSearchMethod.BeginsWith)
-            {
-                filteredSuggestions = _allPredictiveSuggestions?.
-                    Where(pc => pc.CommandName != null && pc.CommandName.ToLower().StartsWith(input.ToLower())).
-                    OrderBy(pc => pc.Rank);
+                    foreach (var suggestion in CollectionsMarshal.AsSpan(_allPredictiveSuggestions))
+                    {
+                        FuzzyMatcher.Match(suggestion.CommandName, inputWithoutSpaces, out var score);
+                        suggestion.Rank = score;
+                        matches.Add(suggestion);
+                    }
+
+                    filteredSuggestions = matches.OrderByDescending(m => m.Rank);
+                    break;
+                }
             }
 
             #endregion
 
             #region Contains search
 
-            /*
-            BenchmarkDotNet=v0.13.2, OS=Windows 10 (10.0.19043.2006/21H1/May2021Update)
-            Intel Core i7-10510U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
-            .NET SDK=6.0.109
-              [Host]     : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
-              DefaultJob : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
-
-            |   Method |     Mean |    Error |   StdDev | Allocated |
-            |--------- |---------:|---------:|---------:|----------:|
-            | Contains | 27.52 ns | 0.539 ns | 0.901 ns |     128 B |
-             */
-
-            if (_commandSearchMethod == CommandSearchMethod.Contains)
-            {
-                filteredSuggestions = _allPredictiveSuggestions?.
-                    Where(pc => pc.CommandName != null && pc.CommandName.ToLower().Contains(input.ToLower())).
-                    OrderBy(pc => pc.Rank);
-            }
-
             #endregion
 
             #region Fuzzy Search
-
-            /*
-            BenchmarkDotNet=v0.13.2, OS=Windows 10 (10.0.19043.2006/21H1/May2021Update)
-            Intel Core i7-10510U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
-            .NET SDK=6.0.109
-              [Host]     : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
-              DefaultJob : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
-
-            |Method |     Mean |   Error |  StdDev | Allocated |
-            |------ |---------:|--------:|--------:|----------:|
-            | Fuzzy | 959.7 us | 6.49 us | 5.76 us | 115.31 KB |
-             */
-
-            if (_commandSearchMethod == CommandSearchMethod.Fuzzy)
-            {
-                var inputWithoutSpaces = Regex.Replace(input, @"\s+", "");
-                
-                var macthes = new List<Suggestion>();
-
-                foreach (var suggestion in CollectionsMarshal.AsSpan(_allPredictiveSuggestions))
-                {
-                    FuzzyMatcher.Match(suggestion.CommandName, inputWithoutSpaces, out var score);
-                    suggestion.Rank = score;
-                    macthes.Add(suggestion);
-                }
-
-                filteredSuggestions = macthes.OrderByDescending(m => m.Rank);
-            }
 
             #endregion
             
