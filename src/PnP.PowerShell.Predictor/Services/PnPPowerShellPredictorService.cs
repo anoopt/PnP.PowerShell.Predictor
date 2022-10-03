@@ -22,9 +22,11 @@ namespace PnP.PowerShell.Predictor.Services
         private readonly HttpClient _client;
         private readonly string _suggestionsFilePath;
 
-        public PnPPowerShellPredictorService(IPnPPowerShellContext pnpPowerShellContext, CommandSearchMethod commandSearchMethod)
+        public PnPPowerShellPredictorService(IPnPPowerShellContext pnpPowerShellContext,
+            CommandSearchMethod commandSearchMethod)
         {
-            _suggestionsFilePath = string.Format(PnPPowerShellPredictorConstants.RemoteSuggestionsFilePath, pnpPowerShellContext.PnPPowerShellVersion);
+            _suggestionsFilePath = string.Format(PnPPowerShellPredictorConstants.RemoteSuggestionsFilePath,
+                pnpPowerShellContext.PnPPowerShellVersion);
             _commandSearchMethod = commandSearchMethod;
             _client = new HttpClient();
             RequestAllPredictiveCommands();
@@ -35,38 +37,41 @@ namespace PnP.PowerShell.Predictor.Services
             //TODO: Decide if we need to make an http request here to get all the commands
             //TODO: if the http request fails then fallback to local JSON file?
             _ = Task.Run(async () =>
-              {
-                  try
-                  {
-                      _allPredictiveSuggestions = await _client.GetFromJsonAsync<List<Suggestion>>(_suggestionsFilePath);
-                  }
-                  catch (Exception e)
-                  {
-                      _allPredictiveSuggestions = null;
-                  }
+            {
+                try
+                {
+                    _allPredictiveSuggestions = await _client.GetFromJsonAsync<List<Suggestion>>(_suggestionsFilePath);
+                }
+                catch (Exception e)
+                {
+                    _allPredictiveSuggestions = null;
+                }
 
-                  if (_allPredictiveSuggestions == null)
-                  {
-                      try
-                      {
-                          string executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                          string fileName = Path.Combine($"{executableLocation}{PnPPowerShellPredictorConstants.LocalSuggestionsFileRelativePath}", PnPPowerShellPredictorConstants.LocalSuggestionsFileName);
-                          string jsonString = await File.ReadAllTextAsync(fileName);
-                          _allPredictiveSuggestions = JsonSerializer.Deserialize<List<Suggestion>>(jsonString)!;
-                          Console.ForegroundColor = ConsoleColor.Yellow;
-                          Console.Write("WARNING: Unable to load predictions from GitHub. Loading suggestions from local file. Hence some commands from the predictions might not work. Press enter to continue.");
-                          Console.ResetColor();
-                      }
-                      catch (Exception e)
-                      {
-                          Console.ForegroundColor = ConsoleColor.DarkRed;
-                          Console.Write("Unable to load predictions. Press enter to continue.");
-                          Console.ResetColor();
-                          _allPredictiveSuggestions = null;
-                      }
-
-                  }
-              });
+                if (_allPredictiveSuggestions == null)
+                {
+                    try
+                    {
+                        string executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                        string fileName =
+                            Path.Combine(
+                                $"{executableLocation}{PnPPowerShellPredictorConstants.LocalSuggestionsFileRelativePath}",
+                                PnPPowerShellPredictorConstants.LocalSuggestionsFileName);
+                        string jsonString = await File.ReadAllTextAsync(fileName);
+                        _allPredictiveSuggestions = JsonSerializer.Deserialize<List<Suggestion>>(jsonString)!;
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write(
+                            "WARNING: Unable to load predictions from GitHub. Loading suggestions from local file. Hence some commands from the predictions might not work. Press enter to continue.");
+                        Console.ResetColor();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.Write("Unable to load predictions. Press enter to continue.");
+                        Console.ResetColor();
+                        _allPredictiveSuggestions = null;
+                    }
+                }
+            });
         }
 
         public virtual List<PredictiveSuggestion>? GetSuggestions(PredictionContext context)
@@ -84,9 +89,6 @@ namespace PnP.PowerShell.Predictor.Services
 
             IEnumerable<Suggestion>? filteredSuggestions = null;
 
-            #region BeginsWith search
-
-           
             /*
               BenchmarkDotNet=v0.13.2, OS=Windows 10 (10.0.19043.2006/21H1/May2021Update)
               Intel Core i7-10510U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
@@ -95,17 +97,19 @@ namespace PnP.PowerShell.Predictor.Services
                 DefaultJob : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2 
             */
 
-           switch (_commandSearchMethod)
-           {
-               /*
-                  |     Method |     Mean |    Error |   StdDev | Allocated |
-                  |----------- |---------:|---------:|---------:|----------:|
-                  | BeginsWith | 26.80 ns | 0.555 ns | 0.831 ns |     128 B |
-               */
-                case CommandSearchMethod.BeginsWith:
-                    filteredSuggestions = _allPredictiveSuggestions?.
-                        Where(pc => pc.CommandName != null && pc.CommandName.ToLower().StartsWith(input.ToLower())).
-                        OrderBy(pc => pc.Rank);
+            #region Search
+
+            switch (_commandSearchMethod)
+            {
+                /*
+                   |     Method |     Mean |    Error |   StdDev | Allocated |
+                   |----------- |---------:|---------:|---------:|----------:|
+                   | StartsWith | 26.80 ns | 0.555 ns | 0.831 ns |     128 B |
+                */
+                case CommandSearchMethod.StartsWith:
+                    filteredSuggestions = _allPredictiveSuggestions
+                        ?.Where(pc => pc.CommandName != null && pc.CommandName.ToLower().StartsWith(input.ToLower()))
+                        .OrderBy(pc => pc.Rank);
                     break;
                 /*
                     |   Method |     Mean |    Error |   StdDev | Allocated |
@@ -113,9 +117,9 @@ namespace PnP.PowerShell.Predictor.Services
                     | Contains | 27.52 ns | 0.539 ns | 0.901 ns |     128 B |
                  */
                 case CommandSearchMethod.Contains:
-                    filteredSuggestions = _allPredictiveSuggestions?.
-                        Where(pc => pc.CommandName != null && pc.CommandName.ToLower().Contains(input.ToLower())).
-                        OrderBy(pc => pc.Rank);
+                    filteredSuggestions = _allPredictiveSuggestions
+                        ?.Where(pc => pc.CommandName != null && pc.CommandName.ToLower().Contains(input.ToLower()))
+                        .OrderBy(pc => pc.Rank);
                     break;
                 /*
                     |Method |     Mean |   Error |  StdDev | Allocated |
@@ -125,7 +129,7 @@ namespace PnP.PowerShell.Predictor.Services
                 case CommandSearchMethod.Fuzzy:
                 {
                     var inputWithoutSpaces = Regex.Replace(input, @"\s+", "");
-                
+
                     var matches = new List<Suggestion>();
 
                     foreach (var suggestion in CollectionsMarshal.AsSpan(_allPredictiveSuggestions))
@@ -142,24 +146,9 @@ namespace PnP.PowerShell.Predictor.Services
 
             #endregion
 
-            #region Contains search
-
-            #endregion
-
-            #region Fuzzy Search
-
-            #endregion
-            
-
-            if (filteredSuggestions == null)
-            {
-                return null;
-            }
-
             var result = filteredSuggestions?.Select(fs => new PredictiveSuggestion(fs.Command)).ToList();
 
             return result;
         }
-
     }
 }

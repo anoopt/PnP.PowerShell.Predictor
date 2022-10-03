@@ -16,7 +16,7 @@ namespace PnP.PowerShell.Predictor
             var pnpPredictorCommandSearchMethod = Environment.GetEnvironmentVariable(PnPPowerShellPredictorConstants.EnvironmentVariableCommandSearchMethod);
             if (pnpPredictorCommandSearchMethod == null)
             {
-                return CommandSearchMethod.BeginsWith;
+                return CommandSearchMethod.StartsWith;
             }
 
             switch (pnpPredictorCommandSearchMethod)
@@ -25,10 +25,10 @@ namespace PnP.PowerShell.Predictor
                     return CommandSearchMethod.Fuzzy;
                 case "Contains":
                     return CommandSearchMethod.Contains;
-                case "BeginsWith":
-                    return CommandSearchMethod.BeginsWith;
+                case "StartsWith":
+                    return CommandSearchMethod.StartsWith;
                 default:
-                    return CommandSearchMethod.BeginsWith;
+                    return CommandSearchMethod.StartsWith;
             }
         }
 

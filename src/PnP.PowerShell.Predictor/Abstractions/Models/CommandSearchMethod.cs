@@ -10,6 +10,6 @@ namespace PnP.PowerShell.Predictor.Abstractions.Models
     {
         Fuzzy,
         Contains,
-        BeginsWith
+        StartsWith
     }
 }
