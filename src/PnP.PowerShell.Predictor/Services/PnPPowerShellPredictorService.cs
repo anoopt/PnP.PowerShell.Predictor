@@ -31,27 +31,50 @@ namespace PnP.PowerShell.Predictor.Services
             RequestAllPredictiveCommands(settings.ShowWarning);
         }
 
+        //For the first 2 versions of this module, the JSON file did not have the "CommandName" property
+        private void UpdateCommandNameInSuggestions()
+        {
+            //if _allPredictiveSuggestions is null, then return
+            if (_allPredictiveSuggestions == null)
+            {
+                return;
+            }
+            
+            //if the first suggestion has the CommandName property, then return
+            if (!string.IsNullOrEmpty(_allPredictiveSuggestions[0].CommandName))
+            {
+                return;
+            }
+            
+            //For each suggestion in the list, set the CommandName property to the first word in the Command property using Regex
+            foreach (var suggestion in _allPredictiveSuggestions)
+            {
+                if (suggestion.Command != null)
+                    suggestion.CommandName = Regex.Match(suggestion.Command, @"^\S+").Value;
+            }
+        }
+        
+        private void RemoveInvalidSuggestions()
+        {
+            //if _allPredictiveSuggestions is null, then return
+            if (_allPredictiveSuggestions == null)
+            {
+                return;
+            }
+            
+            //filter out suggestions where CommandName and Command are not null or empty
+            _allPredictiveSuggestions = _allPredictiveSuggestions.Where(suggestion => !string.IsNullOrEmpty(suggestion.CommandName) && !string.IsNullOrEmpty(suggestion.Command)).ToList();
+        }
+
         protected virtual void RequestAllPredictiveCommands(bool showWarning)
         {
-            //TODO: Decide if we need to make an http request here to get all the commands
-            //TODO: if the http request fails then fallback to local JSON file?
             _ = Task.Run(async () =>
             {
                 try
                 {
                     _allPredictiveSuggestions = await _client.GetFromJsonAsync<List<Suggestion>>(_suggestionsFilePath);
-                    
-                    //For the first 2 versions of this module, the JSON file did not have the "CommandName" property
-                    if (string.IsNullOrEmpty(_allPredictiveSuggestions[0].CommandName))
-                    {
-                        //For each suggestion in the list, set the CommandName property to the first word in the Command property using Regex
-                        foreach (var suggestion in _allPredictiveSuggestions)
-                        {
-                            if (suggestion.Command != null)
-                                suggestion.CommandName = Regex.Match(suggestion.Command, @"^\S+").Value;
-                        }
-                        
-                    }
+                    UpdateCommandNameInSuggestions();
+                    RemoveInvalidSuggestions();
                 }
                 catch (Exception e)
                 {
@@ -69,6 +92,7 @@ namespace PnP.PowerShell.Predictor.Services
                                 PnPPowerShellPredictorConstants.LocalSuggestionsFileName);
                         string jsonString = await File.ReadAllTextAsync(fileName);
                         _allPredictiveSuggestions = JsonSerializer.Deserialize<List<Suggestion>>(jsonString)!;
+                        RemoveInvalidSuggestions();
                         if (showWarning)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
