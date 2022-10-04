@@ -17,7 +17,7 @@ namespace PnP.PowerShell.Predictor
             var pnpPredictorCommandSearchMethod = Environment.GetEnvironmentVariable(PnPPowerShellPredictorConstants.EnvironmentVariableCommandSearchMethod);
             if (pnpPredictorCommandSearchMethod == null)
             {
-                return CommandSearchMethod.StartsWith;
+                return CommandSearchMethod.Contains;
             }
 
             switch (pnpPredictorCommandSearchMethod)
