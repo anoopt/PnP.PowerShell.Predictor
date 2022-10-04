@@ -71,14 +71,13 @@ Hence some commands from the predictions might not be present in the version on 
 
 ## Changing predictions search method
 
-By default the module uses `StartsWith` search i.e. it shows predictions that starts with the input entered. This can be changed to either `Contains` or `Fuzzy` by using the following cmdlet
+By default the module uses `Contains` search i.e. it shows predictions that contain the input entered. This can be changed to either `StartsWith` or `Fuzzy` by using the following cmdlet
 
 ```powershell
 Set-PnPPredictorSearch -Method StartsWith|Contains|Fuzzy
 ```
-The module then needs to re-imported.
 
-`Contains` - as per the name shows predictions that contain the entered input
+`StartsWith` - as per the name shows predictions that start with the entered input
 `Fuzzy` - does a Fuzzy search and returns predictions. Sometimes the results might not be as per the expectaion in this case.
 
 ## Uninstallation
