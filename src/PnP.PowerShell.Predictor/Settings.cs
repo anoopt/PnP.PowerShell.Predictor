@@ -10,6 +10,7 @@ namespace PnP.PowerShell.Predictor
     internal class Settings
     {
         public CommandSearchMethod CommandSearchMethod { get; set; }
+        public bool ShowWarning { get; set; }
 
         private static CommandSearchMethod GetCommandSearchMethod()
         {
@@ -31,12 +32,25 @@ namespace PnP.PowerShell.Predictor
                     return CommandSearchMethod.StartsWith;
             }
         }
+        
+        private static bool GetShowWarning()
+        {
+            var cliM365PredictorShowWarning = Environment.GetEnvironmentVariable(PnPPowerShellPredictorConstants.EnvironmentVariableShowWarning);
+        
+            if (cliM365PredictorShowWarning == null)
+            {
+                return true;
+            }
+
+            return bool.Parse(cliM365PredictorShowWarning);
+        }
 
         public static Settings GetSettings()
         {
             return new Settings()
             {
-                CommandSearchMethod = GetCommandSearchMethod()
+                CommandSearchMethod = GetCommandSearchMethod(),
+                ShowWarning = GetShowWarning()
             };
         }
 }

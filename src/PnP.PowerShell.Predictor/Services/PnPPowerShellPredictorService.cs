@@ -22,17 +22,16 @@ namespace PnP.PowerShell.Predictor.Services
         private readonly HttpClient _client;
         private readonly string _suggestionsFilePath;
 
-        public PnPPowerShellPredictorService(IPnPPowerShellContext pnpPowerShellContext,
-            CommandSearchMethod commandSearchMethod)
+        public PnPPowerShellPredictorService(IPnPPowerShellContext pnpPowerShellContext, Settings settings)
         {
             _suggestionsFilePath = string.Format(PnPPowerShellPredictorConstants.RemoteSuggestionsFilePath,
                 pnpPowerShellContext.PnPPowerShellVersion);
-            _commandSearchMethod = commandSearchMethod;
+            _commandSearchMethod = settings.CommandSearchMethod;
             _client = new HttpClient();
-            RequestAllPredictiveCommands();
+            RequestAllPredictiveCommands(settings.ShowWarning);
         }
 
-        protected virtual void RequestAllPredictiveCommands()
+        protected virtual void RequestAllPredictiveCommands(bool showWarning)
         {
             //TODO: Decide if we need to make an http request here to get all the commands
             //TODO: if the http request fails then fallback to local JSON file?
@@ -41,6 +40,18 @@ namespace PnP.PowerShell.Predictor.Services
                 try
                 {
                     _allPredictiveSuggestions = await _client.GetFromJsonAsync<List<Suggestion>>(_suggestionsFilePath);
+                    
+                    //For the first 2 versions of this module, the JSON file did not have the "CommandName" property
+                    if (string.IsNullOrEmpty(_allPredictiveSuggestions[0].CommandName))
+                    {
+                        //For each suggestion in the list, set the CommandName property to the first word in the Command property using Regex
+                        foreach (var suggestion in _allPredictiveSuggestions)
+                        {
+                            if (suggestion.Command != null)
+                                suggestion.CommandName = Regex.Match(suggestion.Command, @"^\S+").Value;
+                        }
+                        
+                    }
                 }
                 catch (Exception e)
                 {
@@ -58,15 +69,17 @@ namespace PnP.PowerShell.Predictor.Services
                                 PnPPowerShellPredictorConstants.LocalSuggestionsFileName);
                         string jsonString = await File.ReadAllTextAsync(fileName);
                         _allPredictiveSuggestions = JsonSerializer.Deserialize<List<Suggestion>>(jsonString)!;
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write(
-                            "WARNING: Unable to load predictions from GitHub. Loading suggestions from local file. Hence some commands from the predictions might not work. Press enter to continue.");
-                        Console.ResetColor();
+                        if (showWarning)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write(PnPPowerShellPredictorConstants.WarningMessageOnLoad);
+                            Console.ResetColor();
+                        }
                     }
                     catch (Exception e)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.Write("Unable to load predictions. Press enter to continue.");
+                        Console.Write(PnPPowerShellPredictorConstants.GenericErrorMessage);
                         Console.ResetColor();
                         _allPredictiveSuggestions = null;
                     }
@@ -74,19 +87,8 @@ namespace PnP.PowerShell.Predictor.Services
             });
         }
 
-        public virtual List<PredictiveSuggestion>? GetSuggestions(PredictionContext context)
+        private IEnumerable<Suggestion>? GetFilteredSuggestions(string input)
         {
-            var input = context.InputAst.Extent.Text;
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                return null;
-            }
-
-            if (_allPredictiveSuggestions == null)
-            {
-                return null;
-            }
-
             IEnumerable<Suggestion>? filteredSuggestions = null;
 
             /*
@@ -145,6 +147,24 @@ namespace PnP.PowerShell.Predictor.Services
             }
 
             #endregion
+            
+            return filteredSuggestions;
+        }
+
+        public virtual List<PredictiveSuggestion>? GetSuggestions(PredictionContext context)
+        {
+            var input = context.InputAst.Extent.Text;
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return null;
+            }
+
+            if (_allPredictiveSuggestions == null)
+            {
+                return null;
+            }
+
+            IEnumerable<Suggestion>? filteredSuggestions = GetFilteredSuggestions(input);
 
             var result = filteredSuggestions?.Select(fs => new PredictiveSuggestion(fs.Command)).ToList();
 

@@ -50,7 +50,7 @@ namespace PnP.PowerShell.Predictor
                 _settings = Settings.GetSettings();
                 _pnpPowerShellContext = new PnPPowerShellContext(_powerShellRuntime);
                 _pnpPowerShellContext.UpdateContext();
-                _pnpPowerShellPredictorService = new PnPPowerShellPredictorService(_pnpPowerShellContext, _settings.CommandSearchMethod);
+                _pnpPowerShellPredictorService = new PnPPowerShellPredictorService(_pnpPowerShellContext, _settings);
             });
         }
 
