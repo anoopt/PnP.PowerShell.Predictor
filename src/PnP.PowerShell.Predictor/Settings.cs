@@ -29,7 +29,7 @@ namespace PnP.PowerShell.Predictor
                 case "StartsWith":
                     return CommandSearchMethod.StartsWith;
                 default:
-                    return CommandSearchMethod.StartsWith;
+                    return CommandSearchMethod.Contains;
             }
         }
         
