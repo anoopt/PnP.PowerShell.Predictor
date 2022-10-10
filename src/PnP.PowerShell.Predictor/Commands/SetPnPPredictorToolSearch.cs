@@ -5,21 +5,20 @@ using PnP.PowerShell.Predictor.Abstractions.Models;
 
 namespace PnP.PowerShell.Predictor.Commands
 {
-    
-    [Cmdlet(VerbsCommon.Set, "PnPPredictorSearch")]
-    public class SetPnPPredictorSearch : PSCmdlet
+    [Cmdlet(VerbsCommon.Set, "PnPPredictorToolSearch")]
+    public class SetPnPPredictorToolSearch : PSCmdlet
     {
-        private static readonly string[] ReloadModuleStatements = {
-#if DEBUG
-            $"Remove-Module {Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),PnPPowerShellPredictorConstants.LibraryName)} -Force",
-            $"Import-Module {Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),PnPPowerShellPredictorConstants.LibraryName)} -Force"
-#else
+        private static readonly string[] ReloadModuleStatements =
+        {
             "Remove-Module -Name PnP.PowerShell.Predictor -Force",
+#if DEBUG
+            $"Import-Module {Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty, PnPPowerShellPredictorConstants.LibraryName)} -Force"
+#else
             "Import-Module -Name PnP.PowerShell.Predictor -Force"
 #endif
             
         };
-        
+
         [Parameter(Mandatory = true, Position = 0)]
         public CommandSearchMethod Method { get; set; }
 
@@ -27,7 +26,7 @@ namespace PnP.PowerShell.Predictor.Commands
         {
             var scriptToRun = new StringBuilder();
             var _ = scriptToRun.Append(string.Join(";", ReloadModuleStatements));
-            
+
             if (Method.GetType() == typeof(CommandSearchMethod))
             {
                 Environment
@@ -35,9 +34,13 @@ namespace PnP.PowerShell.Predictor.Commands
                         PnPPowerShellPredictorConstants.EnvironmentVariableCommandSearchMethod,
                         Method.ToString()
                     );
+                Environment
+                    .SetEnvironmentVariable(
+                        PnPPowerShellPredictorConstants.EnvironmentVariableShowWarning,
+                        "false"
+                    );
                 InvokeCommand.InvokeScript(scriptToRun.ToString());
             }
-
         }
     }
 }
