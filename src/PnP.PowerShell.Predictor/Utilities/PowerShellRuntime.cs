@@ -15,8 +15,8 @@ namespace PnP.PowerShell.Predictor.Utilities
     /// </summary>
     internal class PowerShellRuntime : IPowerShellRuntime, IDisposable
     {
-        private PowerShell _runtime;
-        private PowerShell Runtime
+        private PowerShell? _runtime;
+        private PowerShell? Runtime
         {
             get
             {
@@ -35,11 +35,11 @@ namespace PnP.PowerShell.Predictor.Utilities
         public Runspace DefaultRunspace => _defaultRunspace.Value;
 
         /// <inheritdoc />
-        public PowerShell ConsoleRuntime { get; } = PowerShell.Create(System.Management.Automation.RunspaceMode.CurrentRunspace);
+        public PowerShell? ConsoleRuntime { get; } = PowerShell.Create(System.Management.Automation.RunspaceMode.CurrentRunspace);
 
-        private string _hostname;
+        private string? _hostname;
         /// <inheritdoc />
-        public string HostName
+        public string? HostName
         {
             get
             {
@@ -84,11 +84,11 @@ namespace PnP.PowerShell.Predictor.Utilities
         public IList<T> ExecuteScript<T>(string contents) => PowerShellRuntime.ExecuteScript<T>(Runtime, contents);
 
         /// <inheritdoc />
-        private static IList<T> ExecuteScript<T>(PowerShell runtime, string contents)
+        private static IList<T> ExecuteScript<T>(PowerShell? runtime, string contents)
         {
-            runtime.Commands.Clear();
-            runtime.AddScript(contents);
-            Collection<T> result = runtime.Invoke<T>();
+            runtime?.Commands.Clear();
+            runtime?.AddScript(contents);
+            Collection<T>? result = runtime?.Invoke<T>();
 
             return result?.ToList() ?? new List<T>();
         }

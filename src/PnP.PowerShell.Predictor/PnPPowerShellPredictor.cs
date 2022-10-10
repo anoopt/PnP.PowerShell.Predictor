@@ -31,26 +31,21 @@ namespace PnP.PowerShell.Predictor
         /// Gets the description of a subsystem implementation.
         /// </summary>
         public string Description => "PnP PowerShell predictor";
-
-        private Settings _settings;
-
-        private IPnPPowerShellPredictorService _pnpPowerShellPredictorService;
-
+        
+        private IPnPPowerShellPredictorService? _pnpPowerShellPredictorService;
+        
         private PowerShellRuntime? _powerShellRuntime;
-
-        private IPnPPowerShellContext _pnpPowerShellContext;
-
-
+        
         internal PnPPowerShellPredictor(string guid)
         {
             _guid = new Guid(guid);
             _powerShellRuntime = new PowerShellRuntime();
             Task.Run(() =>
             {
-                _settings = Settings.GetSettings();
-                _pnpPowerShellContext = new PnPPowerShellContext(_powerShellRuntime);
-                _pnpPowerShellContext.UpdateContext();
-                _pnpPowerShellPredictorService = new PnPPowerShellPredictorService(_pnpPowerShellContext, _settings);
+                var settings = Settings.GetSettings();
+                IPnPPowerShellContext pnpPowerShellContext = new PnPPowerShellContext(_powerShellRuntime);
+                pnpPowerShellContext.UpdateContext();
+                _pnpPowerShellPredictorService = new PnPPowerShellPredictorService(pnpPowerShellContext, settings);
             });
         }
 
@@ -63,7 +58,7 @@ namespace PnP.PowerShell.Predictor
         /// <returns>An instance of <see cref="SuggestionPackage"/>.</returns>
         public SuggestionPackage GetSuggestion(PredictionClient client, PredictionContext context, CancellationToken cancellationToken)
         {
-            var result = _pnpPowerShellPredictorService.GetSuggestions(context);
+            var result = _pnpPowerShellPredictorService?.GetSuggestions(context);
 
             if (result is null || cancellationToken.IsCancellationRequested)
             {

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Management.Automation.Subsystem.Prediction;
+﻿using System.Management.Automation.Subsystem.Prediction;
 using System.Net.Http.Json;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using PnP.PowerShell.Predictor.Abstractions.Interfaces;
 using PnP.PowerShell.Predictor.Abstractions.Models;
 using PnP.PowerShell.Predictor.Utilities;
@@ -76,7 +71,7 @@ namespace PnP.PowerShell.Predictor.Services
                     UpdateCommandNameInSuggestions();
                     RemoveInvalidSuggestions();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     _allPredictiveSuggestions = null;
                 }
@@ -85,12 +80,12 @@ namespace PnP.PowerShell.Predictor.Services
                 {
                     try
                     {
-                        string executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                        string fileName =
+                        var executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                        var fileName =
                             Path.Combine(
                                 $"{executableLocation}{PnPPowerShellPredictorConstants.LocalSuggestionsFileRelativePath}",
                                 PnPPowerShellPredictorConstants.LocalSuggestionsFileName);
-                        string jsonString = await File.ReadAllTextAsync(fileName);
+                        var jsonString = await File.ReadAllTextAsync(fileName);
                         _allPredictiveSuggestions = JsonSerializer.Deserialize<List<Suggestion>>(jsonString)!;
                         RemoveInvalidSuggestions();
                         if (showWarning)
@@ -100,7 +95,7 @@ namespace PnP.PowerShell.Predictor.Services
                             Console.ResetColor();
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.Write(PnPPowerShellPredictorConstants.GenericErrorMessage);
@@ -142,6 +137,7 @@ namespace PnP.PowerShell.Predictor.Services
                     |--------- |---------:|---------:|---------:|----------:|
                     | Contains | 27.52 ns | 0.539 ns | 0.901 ns |     128 B |
                  */
+                default:
                 case CommandSearchMethod.Contains:
                     filteredSuggestions = _allPredictiveSuggestions
                         ?.Where(pc => pc.CommandName != null && pc.CommandName.ToLower().Contains(input.ToLower()))
@@ -161,6 +157,8 @@ namespace PnP.PowerShell.Predictor.Services
                     foreach (var suggestion in CollectionsMarshal.AsSpan(_allPredictiveSuggestions))
                     {
                         FuzzyMatcher.Match(suggestion.CommandName, inputWithoutSpaces, out var score);
+                        //if score is less than 20, then ignore the suggestion
+                        if (score <= 20) continue;
                         suggestion.Rank = score;
                         matches.Add(suggestion);
                     }
@@ -188,7 +186,7 @@ namespace PnP.PowerShell.Predictor.Services
                 return null;
             }
 
-            IEnumerable<Suggestion>? filteredSuggestions = GetFilteredSuggestions(input);
+            var filteredSuggestions = GetFilteredSuggestions(input);
 
             var result = filteredSuggestions?.Select(fs => new PredictiveSuggestion(fs.Command)).ToList();
 

@@ -35,14 +35,14 @@ namespace PnP.PowerShell.Predictor
         
         private static bool GetShowWarning()
         {
-            var cliM365PredictorShowWarning = Environment.GetEnvironmentVariable(PnPPowerShellPredictorConstants.EnvironmentVariableShowWarning);
+            var pnpPredictorShowWarning = Environment.GetEnvironmentVariable(PnPPowerShellPredictorConstants.EnvironmentVariableShowWarning);
         
-            if (cliM365PredictorShowWarning == null)
+            if (pnpPredictorShowWarning == null)
             {
                 return true;
             }
 
-            return bool.Parse(cliM365PredictorShowWarning);
+            return bool.Parse(pnpPredictorShowWarning);
         }
 
         public static Settings GetSettings()

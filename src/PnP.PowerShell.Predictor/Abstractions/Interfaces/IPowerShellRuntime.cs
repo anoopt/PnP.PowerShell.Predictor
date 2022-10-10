@@ -19,12 +19,12 @@ namespace PnP.PowerShell.Predictor.Abstractions.Interfaces
         /// <summary>
         /// The PowerShell environment that the module is imported into.
         /// </summary>
-        PowerShell ConsoleRuntime { get; }
+        PowerShell? ConsoleRuntime { get; }
 
         /// <summary>
         /// Gets the current PowerShell host name.
         /// </summary>
-        public string HostName { get; }
+        public string? HostName { get; }
 
         /// <summary>
         /// Executes the PowerShell cmdlet in the current powershell session.

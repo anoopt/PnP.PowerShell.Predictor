@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using System.Management.Automation.Runspaces;
-using System.Text;
-using System.Threading.Tasks;
 using PnP.PowerShell.Predictor.Abstractions.Interfaces;
 
 namespace PnP.PowerShell.Predictor
@@ -12,7 +7,7 @@ namespace PnP.PowerShell.Predictor
     internal sealed class PnPPowerShellContext : IPnPPowerShellContext
     {
         private static readonly Version DefaultVersion = new Version("0.0.0");
-        private IPowerShellRuntime _powerShellRuntime;
+        private readonly IPowerShellRuntime _powerShellRuntime;
 
         public Version PnPPowerShellVersion { get; private set; } = DefaultVersion;
 
@@ -28,28 +23,31 @@ namespace PnP.PowerShell.Predictor
 
         private Version GetPnPPowerShellVersion()
         {
-            Version latestPnPPowerShellVersion = DefaultVersion;
+            var latestPnPPowerShellVersion = DefaultVersion;
 
             try
             {
                 var outputs = _powerShellRuntime.ExecuteScript<PSObject>("Get-Module -Name PnP.PowerShell -ListAvailable");
                 
-                if (outputs?.Any() == true)
+                if (outputs.Any())
                 {
                     ExtractAndSetLatestPnPPowerShellVersion(outputs);
                 }
             }
             catch (Exception)
             {
+                // ignored
             }
+
             return latestPnPPowerShellVersion;
 
             void ExtractAndSetLatestPnPPowerShellVersion(IEnumerable<PSObject> outputs)
             {
                 foreach (var psObject in outputs)
                 {
-                    string versionOutput = psObject.Properties["Version"].Value.ToString();
-                    Version currentPnPPowerShellVersion = new Version(versionOutput);
+                    var versionOutput = psObject.Properties["Version"].Value.ToString();
+                    if (versionOutput == null) continue;
+                    var currentPnPPowerShellVersion = new Version(versionOutput);
                     if (currentPnPPowerShellVersion > latestPnPPowerShellVersion)
                     {
                         latestPnPPowerShellVersion = currentPnPPowerShellVersion;
