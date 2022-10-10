@@ -69,17 +69,37 @@ The module tries to get the version of the cmdlets from GitHub based on the PnP 
 
 Hence some commands from the predictions might not be present in the version on PnP PowerShell on your machine and they might not work.
 
+To disable this warning, set the environment vaiable `PnPPredictorShowWarning` to false in your profile.ps1 file.
+
+```powershell
+$env:PnPPredictorShowWarning = "false"
+```
 ## Changing predictions search method
 
 By default the module uses `Contains` search i.e. it shows predictions that contain the input entered. This can be changed to either `StartsWith` or `Fuzzy` by using the following cmdlet
 
 ```powershell
-Set-PnPPredictorSearch -Method StartsWith|Contains|Fuzzy
+Set-PnPPredictorToolSearch -Method StartsWith|Contains|Fuzzy
 ```
 
 `StartsWith` - as per the name shows predictions that start with the entered input
 `Fuzzy` - does a Fuzzy search and returns predictions. Sometimes the results might not be as per the expectaion in this case.
 
+## Disabling PnP PowerShell Predictor suggestions in the current session
+
+To disable PnP PowerShell Predictor suggestions in the current session run the following
+
+```powershell
+Disable-PnPPredictorToolSuggestions
+```
+
+## Enabling PnP PowerShell Predictor suggestions in the current session
+
+To enable PnP PowerShell Predictor suggestions in the current session run the following
+
+```powershell
+Enable-PnPPredictorToolSuggestions
+```
 ## Uninstallation
 
 Once installed and enabled, PnP PowerShell Predictor is loaded in the PowerShell profile.
